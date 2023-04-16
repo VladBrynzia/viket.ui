@@ -46,80 +46,8 @@ body {
     scroll-behavior: smooth;
 }
 
-a {
-    color: #9900CC;
-    text-decoration: none;
-}
-
-strong {
-  font-weight: 600;
-}
-
-*, p {
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif !important;
-}
-
 .no-scroll {
   overflow: hidden !important;
-}
-
-@media (min-width: 1280px) {
-  .slider-button-next {
-    position: absolute;
-    cursor: pointer;
-    margin-right: 20px;
-    right: 0;
-    top: 202px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #9900CC;
-    border-radius: 100%;
-    background: #9900CC;
-    background-image: url(../../static/icons/next.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    z-index: 10;
-    transition: all 300ms ease;
-  }
-  .slider-button-next:hover {
-    background: white;
-    background-image: url(../../static/icons/next-purple.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    border-radius: 100%;
-    z-index: 10;
-  }
-}
-
-@media (min-width: 1280px) {
-  .slider-button-prev {
-    position: absolute;
-    cursor: pointer;
-    margin-left: 20px;
-    left: 0;
-    top: 202px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #9900CC;
-    border-radius: 100%;
-    background: #9900CC;
-    background-image: url(../../static/icons/next.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    transform: rotate(180deg);
-    z-index: 10;
-    transition: all 300ms ease;
-  }
-  .slider-button-prev:hover {
-    background: white;
-    background-image: url(../../static/icons/next-purple.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    transform: rotate(180deg);
-    border-radius: 100%;
-    z-index: 10;
-  }
 }
 
 ::-webkit-scrollbar-track {border-radius: 4px;}

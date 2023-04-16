@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
   return (
     <Container>
       <ContentContainer>
-        <Box>
+        {/* <Box>
           <a href="tel:+421944260246 ">
             <ContentBox>
               <Image src="/icons/phone.svg" alt="phone" />
@@ -69,16 +69,19 @@ export const Footer: React.FC = () => {
               {t("footer.info.advisory")}
             </StyledLink>
           </InfoBox>
-        </AboutBox>
+        </AboutBox> */}
         <CopyrightBox>
+          <CopyrightName>{t("footer.info.copyrightName")}</CopyrightName>
           <CopyrightText>{t("footer.info.copyright")}</CopyrightText>
+          <div></div>
         </CopyrightBox>
       </ContentContainer>
     </Container>
   );
 };
 
-const Container = styled("div", {
+const Container = styled("footer", {
+  background: "#fff",
   padding: "30px 15px",
   margin: "20px 0 0",
   "@sm": {
@@ -166,7 +169,8 @@ const InfoBox = styled("div", {
 
 const CopyrightBox = styled("div", {
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-between",
+  gap: 20,
 });
 
 const ContentBox = styled("div", {
@@ -176,10 +180,20 @@ const ContentBox = styled("div", {
 });
 
 const CopyrightText = styled("p", {
-  color: "#000",
+  margin: 0,
+  color: "#171717",
   fontWeight: "300",
-  fontSize: "16px",
-  lineHeight: "38px",
+  fontSize: "15px",
+  lineHeight: "130%",
+  textAlign: "center",
+});
+
+const CopyrightName = styled("p", {
+  margin: 0,
+  color: "#171717",
+  fontWeight: "700",
+  fontSize: "17px",
+  lineHeight: "21px",
   textAlign: "center",
 });
 

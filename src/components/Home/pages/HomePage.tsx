@@ -125,14 +125,14 @@ export const HomePage: React.FC<Props> = ({ pageContext }) => {
         <meta property="og:site_name" content="vander.consulting" />
         <meta name="twitter:card" content="summary_large_image" />
       </PageHead>
-      <HomeContent />
+      {/* <HomeContent />
       <InfoBlock />
       <Services />
       <SecretBlock />
       {projects && <Projects projects={projects} />}
       {articles && <BlogBlock articles={articles} />}
       {feedbacks && <CustomerFeedback feedbacks={feedbacks} />}
-      <Questions />
+      <Questions /> */}
     </>
   );
 };
