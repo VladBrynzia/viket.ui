@@ -1,0 +1,146 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url("/fonts/Montserrat-Light.woff") format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url("/fonts/Montserrat-Regular.woff") format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url("/fonts/Montserrat-Medium.woff") format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url("/fonts/Montserrat-SemiBold.woff") format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url("/fonts/Montserrat-Bold.woff") format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: auto;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+		font-family: 'Montserrat', sans-serif !important;
+    scroll-behavior: smooth;
+}
+
+a {
+    color: #9900CC;
+    text-decoration: none;
+}
+
+strong {
+  font-weight: 600;
+}
+
+*, p {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.no-scroll {
+  overflow: hidden !important;
+}
+
+@media (min-width: 1280px) {
+  .slider-button-next {
+    position: absolute;
+    cursor: pointer;
+    margin-right: 20px;
+    right: 0;
+    top: 202px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #9900CC;
+    border-radius: 100%;
+    background: #9900CC;
+    background-image: url(../../static/icons/next.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    z-index: 10;
+    transition: all 300ms ease;
+  }
+  .slider-button-next:hover {
+    background: white;
+    background-image: url(../../static/icons/next-purple.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: 100%;
+    z-index: 10;
+  }
+}
+
+@media (min-width: 1280px) {
+  .slider-button-prev {
+    position: absolute;
+    cursor: pointer;
+    margin-left: 20px;
+    left: 0;
+    top: 202px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #9900CC;
+    border-radius: 100%;
+    background: #9900CC;
+    background-image: url(../../static/icons/next.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    transform: rotate(180deg);
+    z-index: 10;
+    transition: all 300ms ease;
+  }
+  .slider-button-prev:hover {
+    background: white;
+    background-image: url(../../static/icons/next-purple.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    transform: rotate(180deg);
+    border-radius: 100%;
+    z-index: 10;
+  }
+}
+
+::-webkit-scrollbar-track {border-radius: 4px;}
+::-webkit-scrollbar {width: 6px;}
+::-webkit-scrollbar-thumb {border-radius: 4px;background: #4a4a4a;}
+:hover::-webkit-scrollbar-thumb {background: #6a7d9b;}
+
+.alert-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.alert-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}

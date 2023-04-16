@@ -1,0 +1,19 @@
+import React from "react";
+
+export const Arrow = () => {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 16 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13.8453 13.7427V1.67619H1.43359M1.99964 12.7083L13.8308 1.72377"
+        stroke="black"
+        strokeWidth="3"
+      />
+    </svg>
+  );
+};
