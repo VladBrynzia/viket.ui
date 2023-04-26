@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { styled } from "@stitches/react";
 import { useI18next } from "gatsby-plugin-react-i18next";
-import translate from "../../../../static/icons/language.svg";
-import translateArrow from "../../../../static/icons/lang-arrow.svg";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
 const languagesFullName = [
@@ -36,10 +34,10 @@ export const ChoseLanguage: React.FC = () => {
   return (
     <Container onClick={() => setIsOpen(!isOpen)}>
       <LanguageBox>
-        <Image src={translate} />
+        
         <Text>{defineLanguage}</Text>
       </LanguageBox>
-      <ArrowImage src={translateArrow} />
+    
       {isOpen && (
         <Box ref={(interalRef) => (ref.current = interalRef)}>
           {languagesFullName.map((lang, i) => (

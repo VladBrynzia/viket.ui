@@ -1,14 +1,14 @@
 import * as React from "react";
 import { graphql } from "gatsby";
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
-import { HomePage } from "../features/HomePage/HomePage";
+import { Technical } from "../../features/Technical/Technical";
 
 type Props = {
   pageContext: PageContext;
 };
 
 const IndexPage = ({ pageContext }: Props) => {
-  return <HomePage pageContext={pageContext} />;
+  return <Technical pageContext={pageContext} />;
 };
 
 export default IndexPage;

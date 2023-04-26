@@ -1,6 +1,6 @@
 import * as React from "react";
 import { HeadFC } from "gatsby";
-import { NotFound } from "../components/NotFound/NotFound";
+import { NotFound } from "../features/NotFound/NotFound";
 
 const NotFoundPage = () => {
   return <NotFound />;

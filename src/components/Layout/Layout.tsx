@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
-import { Navigation } from "../Navigation/Navigation";
 import { Footer } from "../Footer/Footer";
 import { Helmet } from "gatsby-plugin-react-i18next";
 import favicon from "../../../static/icons/favicon.png";
 import { Toaster } from "react-hot-toast";
-import { ScrollToTop } from "../../ui/common/ScrollToTop";
 import { Header } from "../Header/Header";
+import { CallUs } from "../../ui/common/CallUs";
+import { styled } from "../../../stitches.config";
 
 type Props = {
   children: ReactElement;
@@ -15,14 +15,24 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
       <Helmet>
-        <link id="favicon-icon" rel="icon" href={favicon} />
+        {/* <link id="favicon-icon" rel="icon" href={favicon} /> */}
       </Helmet>
-      {/* <Navigation /> */}
-      <Header />
-      {children}
-      <Footer />
-      {/* <Toaster position="bottom-right" reverseOrder={false} />
-      <ScrollToTop /> */}
+      <LayoutContainer>
+        <Header />
+        <Main>{children}</Main>
+        <Footer />
+        <CallUs />
+      </LayoutContainer>
     </>
   );
 };
+
+const LayoutContainer = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100vh",
+});
+
+const Main = styled("main", {
+  flex: 1,
+});
