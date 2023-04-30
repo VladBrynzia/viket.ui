@@ -2,7 +2,7 @@ import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
 import React from "react";
 import { styled } from "../../../stitches.config";
 import { MapSection } from "../../components/Contact/MapSection";
-import { Breadcrumb } from "../../ui/common/BreadCrumb";
+import { Breadcrumb } from "../../ui/common/Breadcrumb";
 
 type Props = {
   pageContext: PageContext;

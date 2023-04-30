@@ -1,6 +1,6 @@
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
 import React from "react";
-import { Breadcrumb } from "../../ui/common/BreadCrumb";
+import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import { Link } from "gatsby-plugin-react-i18next";
 

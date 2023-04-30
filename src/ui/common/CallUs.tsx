@@ -30,17 +30,8 @@ export const CallUs = () => {
   );
 };
 
-const goToTop = keyframes({
-  "20%": { transform: "translateY(0)" },
-  "25%": { transform: "translateY(-10px)" },
-  "30%": { transform: "translateY(0)" },
-  "35%": { transform: "translateY(-10px)" },
-  "40%": { transform: "translateY(0)" },
-});
-
 const Box = styled("a", {
   background: "rgba(255, 167, 6, 0.1)",
-  animation: `${goToTop} 3500ms linear infinite`,
   borderRadius: "100%",
   width: 82,
   height: 82,

@@ -14,11 +14,11 @@ export const Breadcrumb: React.FC<Props> = ({ way }) => {
       </Link>
       <ImageArrow src="/icons/bread-arrow.svg" alt="bread-arrow" />
       <Box>
-        {way.map((el) => (
-          <>
+        {way.map((el, i) => (
+          <React.Fragment key={i}>
             <StyledLink to={el.link}>{el.text}</StyledLink>
             <Separator>/</Separator>
-          </>
+          </React.Fragment>
         ))}
       </Box>
     </Container>

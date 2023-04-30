@@ -7,11 +7,11 @@ type Props = {
   pageContext: PageContext;
 };
 
-const IndexPage = ({ pageContext }: Props) => {
+const SolutionsPage = ({ pageContext }: Props) => {
   return <Solutions pageContext={pageContext} />;
 };
 
-export default IndexPage;
+export default SolutionsPage;
 
 export const query = graphql`
   query ($language: String!) {

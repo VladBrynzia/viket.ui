@@ -1,6 +1,6 @@
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
 import React from "react";
-import { Breadcrumb } from "../../ui/common/BreadCrumb";
+import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import { Link } from "gatsby-plugin-react-i18next";
 
@@ -11,16 +11,11 @@ type Props = {
 export const Solutions: React.FC<Props> = ({ pageContext }) => {
   return (
     <>
-      <LinkBox>
-        <Breadcrumb
-          way={[{ link: "/technical", text: "Технический раздел" }]}
-        />
-        <StyledLink to="/technical/certificate">Сертификаты</StyledLink>
-      </LinkBox>
+      <Breadcrumb way={[{ link: "/solutions", text: "Готовые решения" }]} />
       <Container>
-        <Title>Руководство по монтажу</Title>
+        <Title>Готовые решения</Title>
         <Box>
-          <Image src="/images/tech-1.png" alt="tech" />
+          <Image src="/images/solution-1.png" alt="tech" />
           <Text>
             Lorem Ipsum - это текст-"рыба", часто используемый в печати и
             вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на
@@ -47,10 +42,10 @@ export const Solutions: React.FC<Props> = ({ pageContext }) => {
             время, программы электронной вёрстки типа Aldus PageMaker, в
             шаблонах которых используется Lorem Ipsum.
           </Text>
-          <Image src="/images/tech-2.png" alt="tech" />
+          <Image src="/images/solution-2.png" alt="tech" />
         </BoxReverse>
         <Box>
-          <Image src="/images/tech-3.png" alt="tech" />
+          <Image src="/images/solution-3.png" alt="tech" />
           <Text>
             Lorem Ipsum - это текст-"рыба", часто используемый в печати и
             вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на
