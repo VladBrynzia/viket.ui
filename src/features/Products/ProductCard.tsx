@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const ProductCard: React.FC<Props> = ({ info }) => {
-
   return (
     <Container>
       {info.attributes.mainImage && (
@@ -35,7 +34,11 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
 const Container = styled("div", {
   background: "#FAFAFA",
   borderRadius: "0px 5px",
-  width: "calc(100%/3 - 13.35px)",
+  minHeight: "max-content",
+  width: "calc(100%/2 - 10px)",
+  "@sm": {
+    width: "calc(100%/3 - 13.35px)",
+  },
 });
 
 const CardImageBox = styled("div", {
@@ -86,6 +89,7 @@ const No = styled("p", {
 
 const Box = styled("div", {
   padding: "10px 10px 20px",
+  background: "#FAFAFA",
   display: "flex",
   flexDirection: "column",
   gap: 20,

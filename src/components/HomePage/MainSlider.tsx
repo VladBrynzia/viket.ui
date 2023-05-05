@@ -67,7 +67,7 @@ export const MainSlider = () => {
         </StyledSwiper>
         <Nav className={`slider-button-prev`} position="left"></Nav>
         <Nav className={`slider-button-next`} position="right"></Nav>
-        <Button to="/">
+        <Button to="/products">
           Перейти в магазин
           <ShopImage src={shop} alt="shop" />
         </Button>

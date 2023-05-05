@@ -2,6 +2,20 @@ export type Product = {
   attributes: ProductInfoType;
 };
 
+export type ShopItem = {
+  name: string;
+  thickness: string;
+  sheetOption: SheetOption;
+  slug: string;
+  mainImage: {
+    data: {
+      attributes: {
+        url: string;
+      }
+    }
+  };
+}
+
 export type ProductInfoType = {
   name: string;
   description: string;
@@ -23,11 +37,14 @@ export type ProductInfoType = {
       }
     }
   };
-  sheetOption: {
-    pricePerMeter: number;
-    totalPrice: number;
-    listSize: string;
-  }
+  sheetOption: SheetOption[]
+};
+
+export type SheetOption = {
+  pricePerMeter: number;
+  totalPrice: number;
+  listSize: string;
+  haveInStock: boolean;
 };
 
 export type ProductCategory = {

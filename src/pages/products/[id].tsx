@@ -58,6 +58,7 @@ export async function getServerData(context: GetServerDataProps) {
                 pricePerMeter
                 totalPrice
                 listSize
+                haveInStock
               }
             }
           }

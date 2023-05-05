@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { Header } from "../Header/Header";
 import { CallUs } from "../../ui/common/CallUs";
 import { styled } from "../../../stitches.config";
+import { ShopPopupProvider } from "../../context/ShopPopupContext";
 
 type Props = {
   children: ReactElement;
@@ -13,7 +14,7 @@ type Props = {
 
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <>
+    <ShopPopupProvider>
       <Helmet>
         {/* <link id="favicon-icon" rel="icon" href={favicon} /> */}
       </Helmet>
@@ -23,7 +24,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
         <Footer />
         <CallUs />
       </LayoutContainer>
-    </>
+    </ShopPopupProvider>
   );
 };
 

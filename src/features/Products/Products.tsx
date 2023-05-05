@@ -7,6 +7,7 @@ import { ProductCard } from "./ProductCard";
 import { Product, ProductCategory } from "../../types/product";
 import { sendRequestToAPI } from "../../api/api";
 import { Pagination } from "./Pagination";
+import { useShopContext } from "../../context/ShopPopupContext";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -23,6 +24,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage, setProductsPerPage] = useState<number>(15);
+  const { toggleShop } = useShopContext();
 
   useEffect(() => {
     const getData = async () => {
@@ -63,6 +65,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                   pricePerMeter
                   totalPrice
                   listSize
+                  haveInStock
                 }
                 }
               }
@@ -132,7 +135,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     <>
       <LinkBox>
         <Breadcrumb way={[{ link: "/products", text: "Продукция" }]} />
-        <Button>
+        <Button onClick={toggleShop}>
           <ShopImage src={shop} alt="shop" />
           Корзина
         </Button>
@@ -142,10 +145,12 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
           <TypeBox>
             <TypeTitle>Продукция</TypeTitle>
             <TypeList>
+              <Item onClick={() => setFilteredCategory(undefined)}>
+                Вся продукция
+              </Item>
               {productsCategories.map((el, i) => (
                 <Item
                   key={i}
-                  // isActiveType={productType === el.attributes}
                   onClick={() => setFilteredCategory(el.attributes.categoryId)}
                 >
                   {el.attributes.categoryName}
@@ -292,19 +297,6 @@ const Item = styled("li", {
     fontSize: 17,
     lineHeight: "19px",
   },
-
-  variants: {
-    isActiveType: {
-      true: {
-        background: "#5B7FAF",
-        color: "$white",
-      },
-      false: {
-        background: "$white",
-        color: "#171717",
-      },
-    },
-  },
 });
 
 const LeftContainer = styled("div", {
@@ -314,10 +306,6 @@ const LeftContainer = styled("div", {
 });
 
 const RightContainer = styled("div", {
-  display: "flex",
-  gap: 20,
-  flexWrap: "wrap",
-  flexDirection: "column",
   "@md": {
     width: "70%",
   },
