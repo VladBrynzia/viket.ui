@@ -51,7 +51,7 @@ export const Contact: React.FC<Props> = ({ pageContext }) => {
           </Box>
         </Content>
         <Content>
-          <Subtitle>Gmail</Subtitle>
+          <Subtitle>Mail</Subtitle>
           <Text href="mailto:viket_r14@ukr.net">viket_r14@ukr.net</Text>
         </Content>
       </Container>

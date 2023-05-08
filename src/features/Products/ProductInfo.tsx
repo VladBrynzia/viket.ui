@@ -14,7 +14,6 @@ type Props = {
 
 export const ProductInfo: React.FC<Props> = ({ serverData }) => {
   const { product } = serverData;
-  const { toggleShop, isMarkerVisible } = useShopContext();
 
   return (
     <Container>
@@ -25,10 +24,6 @@ export const ProductInfo: React.FC<Props> = ({ serverData }) => {
             { link: `/products/${product.slug}`, text: product.name },
           ]}
         />
-        <Button onClick={toggleShop}>
-          <ShopImage src={shop} alt="shop" />
-          Корзина
-        </Button>
       </LinkBox>
       {product ? <FullProductInfo product={product} /> : <Loading />}
     </Container>

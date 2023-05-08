@@ -21,7 +21,7 @@ export const ShopPopup: React.FC<Props> = ({
     onClickOutside: onClose,
     isOpen: isShopOpen,
   });
-  const { clearShop, totalAmount } = useShopContext();
+  const { clearShop, totalAmount, toggleOrder } = useShopContext();
 
   return (
     <AbsoluteContainer ref={(interalRef) => (ref.current = interalRef)}>
@@ -53,7 +53,10 @@ export const ShopPopup: React.FC<Props> = ({
               <Price>{totalAmount}</Price>
               грн
             </Text>
-            <Button onClick={clearShop}>Очистить корзину</Button>
+            <ButtonBox>
+              <Button onClick={toggleOrder}>Заказать</Button>
+              <Button onClick={clearShop}>Очистить корзину</Button>
+            </ButtonBox>
           </BuskedBox>
         )}
       </Container>
@@ -76,7 +79,7 @@ const CardsBox = styled("div", {
   flexWrap: "wrap",
   gap: 10,
   overflow: "scroll",
-  width: '100%',
+  width: "100%",
   maxHeight: "320px",
   "@sm": {
     maxHeight: "420px",
@@ -99,6 +102,11 @@ const Flex = styled("div", {
   alignItems: "center",
 });
 
+const ButtonBox = styled("div", {
+  display: "flex",
+  gap: 20,
+});
+
 const Button = styled("button", {
   textDecoration: "none",
   width: "fit-content",
@@ -115,7 +123,7 @@ const Button = styled("button", {
   color: "$white",
   margin: "auto 0 0",
   "@md": {
-    padding: "10px 60px",
+    padding: "10px 40px",
     fontSize: 18,
     lineHeight: "21px",
   },
@@ -134,7 +142,7 @@ const AbsoluteContainer = styled("div", {
   background: "$white",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
   borderRadius: "0px",
-  zIndex: 1000,
+  zIndex: 100,
   "@md": {
     width: "65vw",
   },

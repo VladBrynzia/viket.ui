@@ -15,7 +15,10 @@ export const Technical: React.FC<Props> = ({ pageContext }) => {
         <Breadcrumb
           way={[{ link: "/technical", text: "Технический раздел" }]}
         />
-        <StyledLink to="/technical/certificate">Сертификаты</StyledLink>
+        <div>
+          <StyledLink to="/technical/certificate">Сертификаты</StyledLink>
+          <StyledLink to="/technical/greenhouse">Теплицы</StyledLink>
+        </div>
       </LinkBox>
       <Container>
         <Title>Руководство по монтажу</Title>

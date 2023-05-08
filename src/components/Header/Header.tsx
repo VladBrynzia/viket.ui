@@ -76,7 +76,7 @@ const Container = styled("header", {
   boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.05)",
   position: "sticky",
   top: 0,
-  zIndex: 100,
+  zIndex: 99,
 });
 
 const ShopImage = styled("img", {

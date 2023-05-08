@@ -1,6 +1,6 @@
 import * as React from "react";
 import { graphql, PageProps } from "gatsby";
-import { Greenhouse } from "../features/Greenhouse/Greenhouse";
+import { Greenhouse } from "../../features/Greenhouse/Greenhouse";
 
 const GreenhousePage = ({ pageContext }: PageProps) => {
   return <Greenhouse pageContext={pageContext} />;

@@ -25,7 +25,6 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage, setProductsPerPage] = useState<number>(15);
-  const { toggleShop } = useShopContext();
 
   useEffect(() => {
     const getData = async () => {
@@ -137,28 +136,28 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     <>
       <LinkBox>
         <Breadcrumb way={[{ link: "/products", text: "Продукция" }]} />
-        <Button onClick={toggleShop}>
-          <ShopImage src={shop} alt="shop" />
-          Корзина
-        </Button>
       </LinkBox>
       <Container>
         <LeftContainer>
           <TypeBox>
             <TypeTitle>Продукция</TypeTitle>
             <TypeList>
-              <Item onClick={() => setFilteredCategory(undefined)}>
+              <Item
+                isActive={!filteredCategory}
+                onClick={() => setFilteredCategory(undefined)}
+              >
                 Вся продукция
               </Item>
               {productsCategories.map((el, i) => (
                 <Item
+                  isActive={filteredCategory === el.attributes.categoryId}
                   key={i}
                   onClick={() => setFilteredCategory(el.attributes.categoryId)}
                 >
                   {el.attributes.categoryName}
                 </Item>
               ))}
-              <ItemLink to="/greenhouse">Теплицы</ItemLink>
+              <ItemLink to="/technical/greenhouse">Теплицы</ItemLink>
             </TypeList>
           </TypeBox>
           <SortBox>
@@ -298,6 +297,7 @@ const ItemLink = styled(Link, {
   lineHeight: "13px",
   borderRadius: "0px 5px",
   cursor: "pointer",
+  background: "$white",
   "@md": {
     textAlign: "start",
     fontSize: 17,
@@ -314,10 +314,20 @@ const Item = styled("li", {
   lineHeight: "13px",
   borderRadius: "0px 5px",
   cursor: "pointer",
+  background: "$white",
   "@md": {
     textAlign: "start",
     fontSize: 17,
     lineHeight: "19px",
+  },
+
+  variants: {
+    isActive: {
+      true: {
+        background: "#5B7FAF",
+        color: "$white",
+      },
+    },
   },
 });
 

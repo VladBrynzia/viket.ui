@@ -27,7 +27,7 @@ export const ShopCard: React.FC<Props> = ({ info }) => {
           {info.item.sheetOption.listSize} мм
         </Text>
         <Price>{info.item.sheetOption.totalPrice * info.count} грн</Price>
-        <ButtonBox>
+        <ButtonBox onClick={(e) => e.preventDefault()}>
           <Button onClick={() => removeProductFromShop(info.item)}>-</Button>
           {info.count}
           <Button onClick={() => addProductToShop(info.item)}>+</Button>
@@ -47,9 +47,11 @@ const ButtonBox = styled("div", {
   fontWeight: 700,
   fontSize: 14,
   lineHeight: "16px",
+  cursor: 'default',
 });
 
 const Button = styled("button", {
+  cursor: 'pointer',
   background: "#5B7FAF",
   border: "none",
   padding: "8px 12px",

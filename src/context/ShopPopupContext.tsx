@@ -11,6 +11,7 @@ import React from "react";
 import { ShopPopup } from "../components/ShopPopup/ShopPopup";
 import { SheetOption, ShopItem } from "../types/product";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { OrderPopup } from "../components/OrderPopup/OrderPopup";
 
 type PolicyContextType = {
   isShopOpen: boolean;
@@ -20,6 +21,8 @@ type PolicyContextType = {
   isMarkerVisible: boolean;
   clearShop: () => void;
   totalAmount: number;
+  toggleOrder: () => void;
+  isOrderOpen: boolean;
 };
 
 export interface UniqueShopItem {
@@ -37,6 +40,7 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
     ""
   );
   const [isShopOpen, setIsShopOpen] = useState(false);
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [products, setProducts] = useState<ShopItem[]>([]);
   const isMarkerVisible = !!products.length;
 
@@ -80,6 +84,11 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
     setIsShopOpen(!isShopOpen);
   };
 
+  const toggleOrder = () => {
+    setIsOrderOpen(!isOrderOpen);
+    setIsShopOpen(!isShopOpen);
+  };
+
   const addProductToShop = (product: ShopItem) => {
     const newProducts = [...products, product];
     setProducts(newProducts);
@@ -97,7 +106,7 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
       setProducts(newProducts);
       setYourProducts(JSON.stringify(newProducts));
       if (newProducts.length === 0) {
-        toast.error("Вы удалили товар из корзины!");
+        toast.error("Вы удалили все товары из корзины!");
       }
     }
   };
@@ -126,6 +135,8 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
         isMarkerVisible,
         clearShop,
         totalAmount,
+        toggleOrder,
+        isOrderOpen,
       }}
     >
       {isShopOpen && (
@@ -135,6 +146,7 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
           products={productsToShow}
         />
       )}
+      {isOrderOpen && <OrderPopup />}
       {children}
     </ShopPopupContext.Provider>
   );
@@ -149,6 +161,8 @@ export const useShopContext = () => {
     isMarkerVisible,
     clearShop,
     totalAmount,
+    toggleOrder,
+    isOrderOpen,
   } = useContext(ShopPopupContext);
 
   return {
@@ -159,5 +173,7 @@ export const useShopContext = () => {
     isMarkerVisible,
     clearShop,
     totalAmount,
+    toggleOrder,
+    isOrderOpen,
   };
 };
