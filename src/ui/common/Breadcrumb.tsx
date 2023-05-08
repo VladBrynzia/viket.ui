@@ -36,6 +36,7 @@ const Container = styled("div", {
 
 const Box = styled("div", {
   display: "flex",
+  alignItems: 'center',
   gap: 8,
 });
 

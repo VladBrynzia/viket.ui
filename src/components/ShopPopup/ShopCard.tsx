@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "../../../stitches.config";
 import { UniqueShopItem, useShopContext } from "../../context/ShopPopupContext";
+import { Link } from "gatsby-plugin-react-i18next";
 
 type Props = {
   info: UniqueShopItem;
@@ -9,7 +10,7 @@ type Props = {
 export const ShopCard: React.FC<Props> = ({ info }) => {
   const { addProductToShop, removeProductFromShop } = useShopContext();
   return (
-    <Container>
+    <Container to={`/products/${info.item.slug}`}>
       {info.item.mainImage && (
         <CardImageBox>
           <Image
@@ -59,11 +60,18 @@ const Button = styled("button", {
   minWidth: 35,
 });
 
-const Container = styled("div", {
+const Container = styled(Link, {
+  textDecoration: "none",
   background: "#FAFAFA",
   borderRadius: "0px 5px",
-  width: "calc(100%/5 - 7px)",
   minHeight: "max-content",
+  width: "calc(100%/2 - 8px)",
+  "@xs": {
+    width: "calc(100%/4 - 8px)",
+  },
+  "@xl": {
+    width: "calc(100%/5 - 8px)",
+  },
 });
 
 const CardImageBox = styled("div", {
@@ -88,6 +96,7 @@ const Title = styled("p", {
   margin: "0",
   fontSize: 16,
   lineHeight: "18px",
+  height: "35px",
   textOverflow: "ellipsis",
   overflow: "hidden",
   display: "-webkit-box",

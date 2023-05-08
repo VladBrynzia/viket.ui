@@ -1,37 +1,50 @@
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import { CertificateCard } from "./CertificateCard";
+import { sendRequestToAPI } from "../../api/api";
+import { CertificateType } from "../../types/certificate";
 
 type Props = {
   pageContext: PageContext;
 };
 
-const certificates = [
-  {
-    name: "Название сертификата",
-    file: "",
-  },
-  {
-    name: "Название сертификата",
-    file: "",
-  },
-  {
-    name: "Название сертификата",
-    file: "",
-  },
-  {
-    name: "Название сертификата",
-    file: "",
-  },
-  {
-    name: "Название сертификата",
-    file: "",
-  },
-];
-
 export const Certificate: React.FC<Props> = ({ pageContext }) => {
+  const [certificates, setCertificates] = useState<CertificateType[]>([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await sendRequestToAPI(
+          `query($language: I18NLocaleCode)  {
+            certificates(locale: $language) {
+              data	{ 
+                attributes{
+                  name
+                  file {
+                    data {
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }`,
+          {
+            language: pageContext.language,
+          }
+        );
+        setCertificates(data.data.certificates.data);
+      } catch (err) {
+        return err;
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <>
       <Breadcrumb
@@ -44,7 +57,10 @@ export const Certificate: React.FC<Props> = ({ pageContext }) => {
         <Title>Сертификаты</Title>
         <Content>
           {certificates.map((el) => (
-            <CertificateCard certificate={el} />
+            <CertificateCard
+              file={el.attributes.file}
+              name={el.attributes.name}
+            />
           ))}
         </Content>
       </Container>

@@ -29,9 +29,9 @@ export const Footer: React.FC = () => {
           <Box>
             <Title>Услуги</Title>
             <LineImage src="/icons/footer-item.svg" alt="line" />
-            <StyledLink to="/">Порезка листов</StyledLink>
-            <StyledLink to="/">Доставка поликарбоната</StyledLink>
-            <StyledLink to="/">Монтаж поликарбоната </StyledLink>
+            <StyledText>Порезка листов</StyledText>
+            <StyledText>Доставка поликарбоната</StyledText>
+            <StyledText>Монтаж поликарбоната </StyledText>
           </Box>
           <Box>
             <Title>Как с нами связаться</Title>
@@ -116,6 +116,16 @@ const Title = styled("h2", {
     fontSize: 16,
     lineHeight: "19px",
   },
+});
+
+const StyledText = styled("p", {
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "170%",
+  color: "$black",
+  textDecoration: "none",
+  width: "fit-content",
 });
 
 const StyledLink = styled(Link, {

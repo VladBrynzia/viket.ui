@@ -1,23 +1,24 @@
 import React from "react";
 import { styled } from "../../../stitches.config";
+import { FileType } from "../../types/certificate";
 
 type Props = {
-  certificate: {
-    name: string;
-    file: string;
-  };
+  name: string;
+  file: FileType;
 };
 
-export const CertificateCard: React.FC<Props> = ({ certificate }) => {
+export const CertificateCard: React.FC<Props> = ({ name, file }) => {
   return (
     <Container>
-      <Title>{certificate.name}</Title>
-      <Button>Скачать</Button>
+      <Title>{name}</Title>
+      <Button href={file.data.attributes.url} download>
+        Скачать
+      </Button>
     </Container>
   );
 };
 
-const Container = styled("section", {
+const Container = styled("div", {
   width: "100%",
   display: "flex",
   flexDirection: "column",
@@ -26,7 +27,7 @@ const Container = styled("section", {
   borderRadius: "0 10px",
   boxSizing: "border-box",
   padding: "10px",
-  '@xs': {
+  "@xs": {
     width: "calc(100%/2 - 10px)",
   },
   "@md": {
@@ -35,7 +36,8 @@ const Container = styled("section", {
   },
 });
 
-const Button = styled("button", {
+const Button = styled("a", {
+  textDecoration: "none",
   background: "#FFA500",
   border: "none",
   borderRadius: "0 5px",

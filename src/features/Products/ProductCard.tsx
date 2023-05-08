@@ -36,7 +36,7 @@ const Container = styled("div", {
   borderRadius: "0px 5px",
   minHeight: "max-content",
   width: "calc(100%/2 - 10px)",
-  "@sm": {
+  "@xs": {
     width: "calc(100%/3 - 13.35px)",
   },
 });
@@ -64,6 +64,7 @@ const Title = styled("p", {
   margin: "0",
   fontSize: 14,
   lineHeight: "18px",
+  height: "35px",
   textOverflow: "ellipsis",
   overflow: "hidden",
   display: "-webkit-box",
@@ -104,7 +105,7 @@ const Button = styled(Link, {
   background: "#FFA500",
   border: "none",
   borderRadius: "0px 5px",
-  padding: "8px 18px",
+  padding: "8px 12px",
   fontWeight: 700,
   color: "$white",
   fontSize: 14,

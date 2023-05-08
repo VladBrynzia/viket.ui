@@ -8,6 +8,7 @@ import { Product, ProductCategory } from "../../types/product";
 import { sendRequestToAPI } from "../../api/api";
 import { Pagination } from "./Pagination";
 import { useShopContext } from "../../context/ShopPopupContext";
+import { Link } from "gatsby-plugin-react-i18next";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -43,6 +44,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
               attributes {
                 name
                 description
+                characteristics
                 haveInStock
                 thickness
                 color
@@ -156,6 +158,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                   {el.attributes.categoryName}
                 </Item>
               ))}
+              <ItemLink to="/greenhouse">Теплицы</ItemLink>
             </TypeList>
           </TypeBox>
           <SortBox>
@@ -201,7 +204,7 @@ const Container = styled("section", {
   gap: 35,
   maxWidth: 1280,
   margin: "0 auto",
-  "@md": {
+  "@sm": {
     flexDirection: "row",
     padding: "30px 20px 100px",
     gap: 90,
@@ -210,7 +213,8 @@ const Container = styled("section", {
 
 const CardsBox = styled("div", {
   display: "flex",
-  gap: 35,
+  flexWrap: "wrap",
+  gap: 20,
 });
 
 const TypeBox = styled("div", {
@@ -284,7 +288,25 @@ const TypeList = styled("ul", {
   },
 });
 
+const ItemLink = styled(Link, {
+  textDecoration: "none",
+  color: "#171717",
+  textAlign: "center",
+  padding: "8px 20px",
+  fontWeight: 400,
+  fontSize: 10,
+  lineHeight: "13px",
+  borderRadius: "0px 5px",
+  cursor: "pointer",
+  "@md": {
+    textAlign: "start",
+    fontSize: 17,
+    lineHeight: "19px",
+  },
+});
+
 const Item = styled("li", {
+  color: "#171717",
   textAlign: "center",
   padding: "8px 20px",
   fontWeight: 400,
@@ -300,13 +322,13 @@ const Item = styled("li", {
 });
 
 const LeftContainer = styled("div", {
-  "@md": {
+  "@sm": {
     width: "30%",
   },
 });
 
 const RightContainer = styled("div", {
-  "@md": {
+  "@sm": {
     width: "70%",
   },
 });
@@ -337,11 +359,12 @@ const Button = styled("button", {
   fontSize: 10,
   lineHeight: "12px",
   color: "$white",
-  margin: "auto 0 0",
+  margin: "auto 20px 0",
   "@md": {
     padding: "10px 60px",
     fontSize: 18,
     lineHeight: "21px",
+    margin: "auto 0 0",
   },
 });
 

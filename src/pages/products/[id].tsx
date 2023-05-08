@@ -36,6 +36,7 @@ export async function getServerData(context: GetServerDataProps) {
             attributes {
               name
               description
+              characteristics
               haveInStock
               thickness
               color

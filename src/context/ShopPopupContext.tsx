@@ -6,10 +6,10 @@ import {
   useEffect,
   useMemo,
 } from "react";
-
+import toast from "react-hot-toast";
 import React from "react";
 import { ShopPopup } from "../components/ShopPopup/ShopPopup";
-import { ShopItem } from "../types/product";
+import { SheetOption, ShopItem } from "../types/product";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 type PolicyContextType = {
@@ -18,6 +18,8 @@ type PolicyContextType = {
   addProductToShop: (product: ShopItem) => void;
   removeProductFromShop: (product: ShopItem) => void;
   isMarkerVisible: boolean;
+  clearShop: () => void;
+  totalAmount: number;
 };
 
 export interface UniqueShopItem {
@@ -38,11 +40,21 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
   const [products, setProducts] = useState<ShopItem[]>([]);
   const isMarkerVisible = !!products.length;
 
+  const isEqualSheetOption = (a: SheetOption, b: SheetOption): boolean => {
+    return (
+      a.pricePerMeter === b.pricePerMeter &&
+      a.totalPrice === b.totalPrice &&
+      a.listSize === b.listSize &&
+      a.haveInStock === b.haveInStock
+    );
+  };
+
   const productsToShow = useMemo(() => {
     const uniqueShopItems: UniqueShopItem[] = products.reduce((acc, item) => {
-      const { name } = item;
       const existingItem = acc.find(
-        (uniqueItem) => uniqueItem.item.name === name
+        (uniqueItem) =>
+          uniqueItem.item.slug === item.slug &&
+          isEqualSheetOption(uniqueItem.item.sheetOption, item.sheetOption)
       );
       if (existingItem) {
         existingItem.count += 1;
@@ -72,6 +84,9 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
     const newProducts = [...products, product];
     setProducts(newProducts);
     setYourProducts(JSON.stringify(newProducts));
+    if (!isShopOpen) {
+      toast.success("Товар добавлен в корзину!");
+    }
   };
 
   const removeProductFromShop = (product: ShopItem) => {
@@ -81,8 +96,25 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
       newProducts.splice(index, 1);
       setProducts(newProducts);
       setYourProducts(JSON.stringify(newProducts));
+      if (newProducts.length === 0) {
+        toast.error("Вы удалили товар из корзины!");
+      }
     }
   };
+
+  const clearShop = () => {
+    setProducts([]);
+    setYourProducts("");
+    toast.error("Вы удалили все товары из корзины!");
+  };
+
+  const totalAmount = useMemo(() => {
+    let totalPrice = 0;
+    for (const product of products) {
+      totalPrice += product.sheetOption.totalPrice;
+    }
+    return totalPrice;
+  }, [products]);
 
   return (
     <ShopPopupContext.Provider
@@ -92,6 +124,8 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
         addProductToShop,
         removeProductFromShop,
         isMarkerVisible,
+        clearShop,
+        totalAmount,
       }}
     >
       {isShopOpen && (
@@ -113,6 +147,8 @@ export const useShopContext = () => {
     addProductToShop,
     removeProductFromShop,
     isMarkerVisible,
+    clearShop,
+    totalAmount,
   } = useContext(ShopPopupContext);
 
   return {
@@ -121,5 +157,7 @@ export const useShopContext = () => {
     addProductToShop,
     removeProductFromShop,
     isMarkerVisible,
+    clearShop,
+    totalAmount,
   };
 };

@@ -56,6 +56,10 @@ const LinkBox = styled("div", {
   margin: "0 auto",
   display: "flex",
   justifyContent: "space-between",
+  flexDirection: "column",
+  "@sm": {
+    flexDirection: "row",
+  },
   "&>div": {
     margin: "0",
     "@md": {
@@ -78,6 +82,7 @@ const Button = styled("button", {
   textDecoration: "none",
   cursor: "pointer",
   display: "flex",
+  width: "fit-content",
   gap: 8,
   background: "#FFA500",
   border: "none",
@@ -87,29 +92,11 @@ const Button = styled("button", {
   fontSize: 10,
   lineHeight: "12px",
   color: "$white",
-  margin: "auto 0 0",
+  margin: "auto 20px 0",
   "@md": {
     padding: "10px 60px",
     fontSize: 18,
     lineHeight: "21px",
+    margin: "auto 0 0",
   },
-
-  // variants: {
-  //   isMarkerVisible: {
-  //     true: {
-  //       "&:after": {
-  //         content: "",
-  //         position: "absolute",
-  //         top: -8,
-  //         right: -8,
-  //         zIndex: 2,
-  //         width: 20,
-  //         height: 20,
-  //         background: "#ba7e0f",
-  //         borderRadius: "100%",
-  //         // animation: `${radar} 3s linear infinite`,
-  //       },
-  //     },
-  //   },
-  // },
 });

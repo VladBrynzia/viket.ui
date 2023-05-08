@@ -1,12 +1,12 @@
 import * as React from "react";
 import { graphql, PageProps } from "gatsby";
-import { Products } from "../../features/Products/Products";
+import { Greenhouse } from "../features/Greenhouse/Greenhouse";
 
-const ProductsPage = ({ pageContext }: PageProps) => {
-  return <Products pageContext={pageContext} />;
+const GreenhousePage = ({ pageContext }: PageProps) => {
+  return <Greenhouse pageContext={pageContext} />;
 };
 
-export default ProductsPage;
+export default GreenhousePage;
 
 export const query = graphql`
   query ($language: String!) {

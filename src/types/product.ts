@@ -19,6 +19,7 @@ export type ShopItem = {
 export type ProductInfoType = {
   name: string;
   description: string;
+  characteristics: string;
   haveInStock: boolean;
   color: string;
   thickness: string;

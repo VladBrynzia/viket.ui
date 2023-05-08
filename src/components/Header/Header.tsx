@@ -4,6 +4,8 @@ import { ChoseLanguage } from "../../ui/common/Language/ChoseLanguage";
 import { useTranslation } from "gatsby-plugin-react-i18next";
 import { Link } from "gatsby-plugin-react-i18next";
 import { MobileMenu } from "./MobileMenu";
+import headerShop from "../../../static/icons/header-shop.png";
+import { useShopContext } from "../../context/ShopPopupContext";
 
 export const menuItems = [
   {
@@ -31,6 +33,7 @@ export const menuItems = [
 export const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, toggle] = useReducer((value) => !value, false);
+  const { toggleShop } = useShopContext();
 
   return (
     <Container>
@@ -59,6 +62,7 @@ export const Header = () => {
             <Phone>{t("header.nav.phone")}</Phone>
           </ExternalReference>
         </InfoBox>
+        <ShopImage onClick={toggleShop} src={headerShop} alt="header-shop" />
       </ContentContainer>
       <MobileMenu isOpen={isMenuOpen} toggle={toggle} />
     </Container>
@@ -70,6 +74,19 @@ const Container = styled("header", {
   transition: "all 0ms ease",
   background: "#fff",
   boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.05)",
+  position: "sticky",
+  top: 0,
+  zIndex: 100,
+});
+
+const ShopImage = styled("img", {
+  display: "none",
+  "@md": {
+    display: "block",
+    cursor: "pointer",
+    width: 30,
+    height: 30,
+  },
 });
 
 const ContentContainer = styled("div", {

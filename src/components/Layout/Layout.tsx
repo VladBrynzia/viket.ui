@@ -23,6 +23,10 @@ export const Layout: React.FC<Props> = ({ children }) => {
         <Main>{children}</Main>
         <Footer />
         <CallUs />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{ duration: 3000 }}
+        />
       </LayoutContainer>
     </ShopPopupProvider>
   );

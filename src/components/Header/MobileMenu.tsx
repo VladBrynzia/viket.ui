@@ -7,6 +7,8 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import { menuItems } from "./Header";
 import { keyframes } from "@stitches/react";
 import { SocialMedia } from "../../ui/common/SocialMedia/SocialMedia";
+import headerShop from "../../../static/icons/header-shop.png";
+import { useShopContext } from "../../context/ShopPopupContext";
 
 type Props = {
   isOpen: boolean;
@@ -17,6 +19,7 @@ export const MobileMenu: React.FC<Props> = ({ isOpen, toggle }) => {
   const { t } = useTranslation();
   useNoScroll(isOpen);
   const { ref } = useClickOutside({ onClickOutside: toggle, isOpen });
+  const { toggleShop } = useShopContext();
 
   return (
     <AbsoluteContainer isOpen={isOpen}>
@@ -34,6 +37,14 @@ export const MobileMenu: React.FC<Props> = ({ isOpen, toggle }) => {
             </StyledLink>
           ))}
         </List>
+        <ShopImage
+          onClick={() => {
+            toggleShop();
+            toggle();
+          }}
+          src={headerShop}
+          alt="header-shop"
+        />
         <SocialMedia />
       </Container>
     </AbsoluteContainer>
@@ -67,6 +78,12 @@ const AbsoluteContainer = styled("div", {
       },
     },
   },
+});
+
+const ShopImage = styled("img", {
+  cursor: "pointer",
+  width: 30,
+  height: 30,
 });
 
 const Container = styled("div", {
