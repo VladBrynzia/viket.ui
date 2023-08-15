@@ -1,5 +1,5 @@
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import shop from "../../../static/icons/shop.png";
@@ -9,6 +9,7 @@ import { sendRequestToAPI } from "../../api/api";
 import { Pagination } from "./Pagination";
 import { useShopContext } from "../../context/ShopPopupContext";
 import { Link } from "gatsby-plugin-react-i18next";
+import { Loading } from "../../ui/common/Loading";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -25,6 +26,10 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage, setProductsPerPage] = useState<number>(15);
+  const [thickness, setThickness] = useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string | undefined>(undefined);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -105,6 +110,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
         setProductsCategories(data.data.productsCategories.data);
         setTotalPage(data.data.products.meta.pagination.pageCount);
         setProductsPerPage(data.data.products.meta.pagination.pageSize);
+        setIsLoading(true);
       } catch (err) {
         return err;
       }
@@ -132,69 +138,168 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     }
   };
 
+  const uniqueThickness = useMemo(() => {
+    let uniqueArr: string[] = [];
+    for (let i = 0; i < products.length; i++) {
+      if (!uniqueArr.includes(products[i].attributes.thickness)) {
+        uniqueArr.push(products[i].attributes.thickness);
+      }
+    }
+    return uniqueArr;
+  }, [products]);
+
+  const uniqueColor = useMemo(() => {
+    let uniqueArr: string[] = [];
+    for (let i = 0; i < products.length; i++) {
+      if (!uniqueArr.includes(products[i].attributes.color)) {
+        uniqueArr.push(products[i].attributes.color);
+      }
+    }
+    return uniqueArr;
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    if (!thickness && !color) {
+      // если оба стейта undefined, возвращаем исходный массив
+      return products;
+    } else if (thickness && !color) {
+      // если есть только thickness, возвращаем массив с товарами, у которых thickness равен стейту thickness
+      return products.filter(
+        (product) => product.attributes.thickness === thickness
+      );
+    } else if (!thickness && color) {
+      // если есть только color, возвращаем массив с товарами, у которых color равен стейту color
+      return products.filter((product) => product.attributes.color === color);
+    } else {
+      // если есть и thickness и color, возвращаем массив с товарами, у которых и thickness, и color равны соответствующим стейтам
+      return products.filter(
+        (product) =>
+          product.attributes.thickness === thickness &&
+          product.attributes.color === color
+      );
+    }
+  }, [products, thickness, color]);
+
   return (
     <>
-      <LinkBox>
-        <Breadcrumb way={[{ link: "/products", text: "Продукция" }]} />
-      </LinkBox>
-      <Container>
-        <LeftContainer>
-          <TypeBox>
-            <TypeTitle>Продукция</TypeTitle>
-            <TypeList>
-              <Item
-                isActive={!filteredCategory}
-                onClick={() => setFilteredCategory(undefined)}
-              >
-                Вся продукция
-              </Item>
-              {productsCategories.map((el, i) => (
-                <Item
-                  isActive={filteredCategory === el.attributes.categoryId}
-                  key={i}
-                  onClick={() => setFilteredCategory(el.attributes.categoryId)}
-                >
-                  {el.attributes.categoryName}
-                </Item>
-              ))}
-              <ItemLink to="/technical/greenhouse">Теплицы</ItemLink>
-            </TypeList>
-          </TypeBox>
-          <SortBox>
-            <Left>
-              <SortTitle>Толщина</SortTitle>
-              {products.map((el: Product, i: number) => (
-                <div>{el.attributes.thickness}</div>
-              ))}
-            </Left>
-            <Right>
-              <SortTitle>Цвет</SortTitle>
-              {products.map((el: Product, i: number) => (
-                <div>{el.attributes.color}</div>
-              ))}
-            </Right>
-          </SortBox>
-        </LeftContainer>
-        <RightContainer>
-          <CardsBox>
-            {products.map((el: Product, i: number) => (
-              <ProductCard key={i} info={el} />
-            ))}
-          </CardsBox>
-          {!!products?.length && totalPage > 1 && (
-            <Pagination
-              length={totalPage}
-              paginate={paginate}
-              prevPage={prevPage}
-              nextPage={nextPage}
-              currentPage={currentPage}
-            />
-          )}
-        </RightContainer>
-      </Container>
+      {!isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <LinkBox>
+            <Breadcrumb way={[{ link: "/products", text: "Продукция" }]} />
+          </LinkBox>
+          <Container>
+            <LeftContainer>
+              <TypeBox>
+                <TypeTitle>Продукция</TypeTitle>
+                <TypeList>
+                  <Item
+                    isActive={!filteredCategory}
+                    onClick={() => setFilteredCategory(undefined)}
+                  >
+                    Вся продукция
+                  </Item>
+                  {productsCategories.map((el, i) => (
+                    <Item
+                      isActive={filteredCategory === el.attributes.categoryId}
+                      key={i}
+                      onClick={() =>
+                        setFilteredCategory(el.attributes.categoryId)
+                      }
+                    >
+                      {el.attributes.categoryName}
+                    </Item>
+                  ))}
+                  <ItemLink to="/technical/greenhouse">Теплицы</ItemLink>
+                </TypeList>
+              </TypeBox>
+              <SortBox>
+                <Left>
+                  <SortTitle>Толщина</SortTitle>
+                  <SortParamBox>
+                    {uniqueThickness.map((el: string, i: number) => (
+                      <SortParam
+                        key={i}
+                        onClick={() => {
+                          if (!thickness || thickness !== el) {
+                            setThickness(el);
+                          }
+                          if (thickness === el) {
+                            setThickness(undefined);
+                          }
+                        }}
+                      >
+                        <Input type="checkbox" checked={thickness === el} />
+                        <Text>{el} мм</Text>
+                      </SortParam>
+                    ))}
+                  </SortParamBox>
+                </Left>
+                <Right>
+                  <SortTitle>Цвет</SortTitle>
+                  <SortParamBox>
+                    {uniqueColor.map((el: string, i: number) => (
+                      <SortParam
+                        key={i}
+                        onClick={() => {
+                          if (!color || color !== el) {
+                            setColor(el);
+                          }
+                          if (color === el) {
+                            setColor(undefined);
+                          }
+                        }}
+                      >
+                        <Input type="checkbox" checked={color === el} />
+                        <Text>{el}</Text>
+                      </SortParam>
+                    ))}
+                  </SortParamBox>
+                </Right>
+              </SortBox>
+            </LeftContainer>
+            <RightContainer>
+              <CardsBox>
+                {filteredProducts.map((el: Product, i: number) => (
+                  <ProductCard key={i} info={el} />
+                ))}
+              </CardsBox>
+              {!!products?.length && totalPage > 1 && (
+                <Pagination
+                  length={totalPage}
+                  paginate={paginate}
+                  prevPage={prevPage}
+                  nextPage={nextPage}
+                  currentPage={currentPage}
+                />
+              )}
+            </RightContainer>
+          </Container>
+        </>
+      )}
     </>
   );
 };
+
+export const Text = styled("label", {
+  cursor: "pointer",
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "16px",
+  color: "#171717",
+});
+
+export const Input = styled("input", {
+  cursor: "pointer",
+  borderRadius: "100% !important",
+});
+
+export const SortParamBox = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+});
 
 const Container = styled("section", {
   padding: "30px 20px",
@@ -208,6 +313,16 @@ const Container = styled("section", {
     padding: "30px 20px 100px",
     gap: 90,
   },
+});
+
+const SortParam = styled("label", {
+  display: "flex",
+  alignItems: "center",
+  gap: 5,
+  margin: "5px 10px",
+  width: "fit-content",
+  cursor: "pointer",
+  padding: "2px 10px",
 });
 
 const CardsBox = styled("div", {
@@ -238,15 +353,15 @@ const SortBox = styled("div", {
 const Left = styled("div", {
   width: "50%",
   borderRight: "1px solid #cbcbcb",
-  margin: "-20px 0 0",
-  padding: "20px 0 0",
+  margin: "-20px 0 -20px",
+  padding: "20px 0 20px",
 });
 
 const Right = styled("div", {
   width: "50%",
   borderLeft: "1px solid #cbcbcb",
-  margin: "-20px 0 0",
-  padding: "20px 0 0",
+  margin: "-20px 0 -20px",
+  padding: "20px 0 20px",
 });
 
 const TypeTitle = styled("h4", {

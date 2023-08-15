@@ -85,7 +85,7 @@ const Image = styled("img", {
   width: "100%",
   maxWidth: 504,
   borderRadius: 5,
-  margin: "0 auto 15px",
+  margin: "0 auto",
   "@md": {
     width: 504,
   },

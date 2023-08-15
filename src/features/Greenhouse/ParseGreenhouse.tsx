@@ -12,13 +12,47 @@ import arrow from "../../../static/icons/slider-arrow.png";
 type Props = {
   greenhouse: GreenhouseType;
 };
+
+const FillTable: React.FC<{ table: any }> = ({ table }) => {
+  const content = table.withHeadings ? table.content.slice(1) : table.content;
+  return (
+    <TableContainer>
+      <Table>
+        {table.withHeadings && (
+          <thead>
+            <tr>
+              {table.content[0].map((element: any, index: number) => (
+                <th key={index}>
+                  <TableText
+                    css={{ fontWeight: 700 }}
+                    dangerouslySetInnerHTML={{ __html: `${element}` }}
+                  ></TableText>
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )}
+        {content.map((el: any, i: number) => {
+          return (
+            <tr key={i}>
+              {el.map((element: any, index: number) => (
+                <Td key={index}>
+                  <TableText
+                    dangerouslySetInnerHTML={{ __html: `${element}` }}
+                  ></TableText>
+                </Td>
+              ))}
+            </tr>
+          );
+        })}
+      </Table>
+    </TableContainer>
+  );
+};
+
 export const ParseGreenhouse: React.FC<Props> = ({ greenhouse }) => {
   const richText = greenhouse.attributes.description;
   const richTextObj = eval("({obj:[" + richText + "]})");
-
-  console.log("====================================");
-  console.log(greenhouse);
-  console.log("====================================");
 
   const checkType = (el: any) => {
     if (el.type === "paragraph") {
@@ -46,6 +80,9 @@ export const ParseGreenhouse: React.FC<Props> = ({ greenhouse }) => {
     }
     if (el.type === "warning") {
       return warningRender(el.data);
+    }
+    if (el.type === "table") {
+      return <FillTable table={el.data} />;
     }
     if (el.type === "quote") {
       return (
@@ -182,6 +219,42 @@ export const ParseGreenhouse: React.FC<Props> = ({ greenhouse }) => {
     </>
   );
 };
+
+const TableContainer = styled("div", {
+  width: "100%",
+  overflow: "auto",
+  padding: 5,
+});
+
+const Table = styled("table", {
+  borderCollapse: "collapse",
+  margin: "18px auto",
+  borderRadius: "0px 5px",
+  borderStyle: "hidden",
+  overflow: "hidden",
+  boxShadow: "0 0 0 1px #9F9F9F",
+  th: {
+    border: "1px solid #9F9F9F",
+    backgroundColor: "$primaryBackground",
+    padding: "8px",
+    textAlign: "left",
+  },
+});
+
+const Td = styled("td", {
+  verticalAlign: "top",
+  border: "1px solid #9F9F9F",
+  padding: "8px 30px",
+  maxWidth: 400,
+  overflow: "hidden",
+});
+
+const TableText = styled("p", {
+  fontWeight: "400",
+  fontSize: "18px",
+  margin: 0,
+  lineHeight: 1.5,
+});
 
 const StyledSwiper = styled(Swiper, {});
 

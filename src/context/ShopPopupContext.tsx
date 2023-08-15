@@ -114,7 +114,6 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
   const clearShop = () => {
     setProducts([]);
     setYourProducts("");
-    toast.error("Вы удалили все товары из корзины!");
   };
 
   const totalAmount = useMemo(() => {
@@ -146,7 +145,9 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
           products={productsToShow}
         />
       )}
-      {isOrderOpen && <OrderPopup />}
+      {isOrderOpen && (
+        <OrderPopup order={productsToShow} totalAmount={totalAmount} />
+      )}
       {children}
     </ShopPopupContext.Provider>
   );

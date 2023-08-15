@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Formik, Field, Form } from "formik";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import toast from "react-hot-toast";
-import { useI18next, useTranslation } from "gatsby-plugin-react-i18next";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 import { sendRequestToAPI } from "../../api/api";
 import { CommonTextArea } from "../../ui/common/CommonTextArea";
 import { styled } from "../../../stitches.config";
-import { useShopContext } from "../../context/ShopPopupContext";
+import { UniqueShopItem, useShopContext } from "../../context/ShopPopupContext";
 import { useNoScroll } from "../../hooks/useNoScroll";
 
 type Values = {
@@ -16,18 +16,35 @@ type Values = {
   token?: string;
 };
 
+type Props = {
+  order: UniqueShopItem[];
+  totalAmount: number;
+};
+
 const initialValues = {
   name: "",
   phone: "",
   message: "",
 };
 
-export const OrderPopup: React.FC = () => {
+export const OrderPopup: React.FC<Props> = ({ order, totalAmount }) => {
   const { t } = useTranslation();
   const { toggleOrder, isOrderOpen, clearShop } = useShopContext();
+
+  const orderToTextValue = useMemo(() => {
+    let value = "";
+
+    for (let item of order) {
+      value += `${item.item.name}(Толщина: ${item.item.thickness}мм, Размер листа: ${item.item.sheetOption.listSize}) - ${item.count}шт; `;
+    }
+
+    value += `Сумма заказа: ${totalAmount} грн;`;
+    return value;
+  }, [order]);
+
   useNoScroll(isOrderOpen);
   const submitForm = async (data: Values, resetForm: () => void) => {
-    const { name, phone, message, token } = data;
+    const { name, phone, token } = data;
 
     // if (!token) {
     //   toast.error(t("contact.form.error.send"));
@@ -37,12 +54,8 @@ export const OrderPopup: React.FC = () => {
     const mutationVariables = {
       name,
       phone: String(phone),
-      message,
+      message: orderToTextValue,
     };
-
-    console.log("====================================");
-    console.log(mutationVariables);
-    console.log("====================================");
 
     try {
       await sendRequestToAPI(
@@ -54,7 +67,7 @@ export const OrderPopup: React.FC = () => {
             }
           }`,
         {
-          variables: mutationVariables,
+          data: mutationVariables,
         }
         // {
         //   authorization: token,
@@ -63,7 +76,9 @@ export const OrderPopup: React.FC = () => {
     } catch (err) {
       return err;
     }
-    toast.success(t("contact.form.success.send"));
+    toast.success(
+      "Заказ отправлен в обработку. Наш менеджер с Вами свяжется в ближайшее время!"
+    );
     resetForm();
     clearShop();
     toggleOrder();
@@ -114,7 +129,7 @@ export const OrderPopup: React.FC = () => {
                       {!!errors.phone && <Warning>{errors.phone}</Warning>}
                     </RelativeDiv>
                   </Box>
-                  <TextareaBox>
+                  {/* <TextareaBox>
                     <Field
                       required
                       component={CommonTextArea}
@@ -125,7 +140,7 @@ export const OrderPopup: React.FC = () => {
                     {!!errors.message && (
                       <WarningTextarea>{errors.message}</WarningTextarea>
                     )}
-                  </TextareaBox>
+                  </TextareaBox> */}
                   {/* {process.env.SITE_KEY_HCAPTCHA && (
                   <HCaptcha
                     sitekey={process.env.SITE_KEY_HCAPTCHA}
@@ -146,7 +161,7 @@ export const OrderPopup: React.FC = () => {
 };
 
 const AbsoluteContainer = styled("div", {
-  position: "absolute",
+  position: "fixed",
   top: 0,
   bottom: 0,
   right: 0,
@@ -166,7 +181,8 @@ const Container = styled("div", {
   padding: "20px",
   borderRadius: 10,
   background: "$white",
-  maxWidth: "1280px",
+  width: "fit-content",
+  maxWidth: "800px",
   boxSizing: "border-box",
   "@md": {
     padding: "40px",
@@ -255,7 +271,7 @@ const Box = styled("div", {
   gap: 20,
   width: "100%",
   "@sm": {
-    flexDirection: "row",
+    // flexDirection: "row",
   },
   "@md": {
     gap: 20,

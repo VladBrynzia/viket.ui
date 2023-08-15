@@ -101,3 +101,34 @@ body {
     transform: translateY(-50%);
   }
 }
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #92afd6;
+  border-radius: 100%;
+  display: grid;
+  place-content: center;
+  background-color: white;
+  cursor: pointer;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #FFAE13;
+  transform-origin: center;
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}

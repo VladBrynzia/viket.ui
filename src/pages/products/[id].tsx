@@ -1,95 +1,18 @@
 import * as React from "react";
-import { GetServerDataProps, graphql, PageProps } from "gatsby";
-import { sendRequestToAPI } from "../../api/api";
-import { ProductInfoType } from "../../types/product";
+import { graphql } from "gatsby";
+import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
 import { ProductInfo } from "../../features/Products/ProductInfo";
 
-interface ContextParams {
-  [key: string]: string;
-}
-
-export type ProductPageData = {
-  product: ProductInfoType;
-  slug: string;
+type Props = {
+  pageContext: PageContext;
+  location: Location;
 };
 
-const url = process.env.GATSBY_API_URL;
-
-const ArticlePage: React.FC<PageProps> = ({ serverData }) => {
-  const data = serverData as ProductPageData;
-
-  return <ProductInfo serverData={data} />;
+const ProductPage = ({ pageContext, location }: Props) => {
+  return <ProductInfo pageContext={pageContext} location={location} />;
 };
 
-export default ArticlePage;
-
-export async function getServerData(context: GetServerDataProps) {
-  const { id } = context.params as ContextParams;
-
-  const getData = async () => {
-    try {
-      const { data } = await sendRequestToAPI(
-        `query($language: I18NLocaleCode, $filters: ProductFiltersInput)  {
-          product: products(locale: $language, filters: $filters) {
-          data {
-            id
-            attributes {
-              name
-              description
-              characteristics
-              haveInStock
-              thickness
-              color
-              mainImage {
-                data {
-                  attributes {
-                    url
-                  }
-                }
-              }
-              slug
-              images {
-                data {
-                  attributes {
-                    url
-                  }
-                }
-              }
-              sheetOption {
-                pricePerMeter
-                totalPrice
-                listSize
-                haveInStock
-              }
-            }
-          }
-        }
-      }`,
-        {
-          language: context.pageContext.language,
-          filters: { slug: { eq: id } },
-        },
-        {},
-        url
-      );
-
-      return data;
-    } catch (err) {
-      return err;
-    }
-  };
-
-  const { data } = await getData();
-
-  const pageData: ProductPageData = {
-    product: data.product.data[0].attributes,
-    slug: id,
-  };
-
-  return {
-    props: { ...pageData },
-  };
-}
+export default ProductPage;
 
 export const query = graphql`
   query ($language: String!) {

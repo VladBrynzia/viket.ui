@@ -5,6 +5,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import { ShopCard } from "./ShopCard";
 import { UniqueShopItem, useShopContext } from "../../context/ShopPopupContext";
 import empty from "../../../static/icons/empty-shop.png";
+import toast from "react-hot-toast";
 
 type Props = {
   onClose: () => void;
@@ -55,7 +56,14 @@ export const ShopPopup: React.FC<Props> = ({
             </Text>
             <ButtonBox>
               <Button onClick={toggleOrder}>Заказать</Button>
-              <Button onClick={clearShop}>Очистить корзину</Button>
+              <Button
+                onClick={() => {
+                  clearShop();
+                  toast.error("Вы удалили все товары из корзины!");
+                }}
+              >
+                Очистить корзину
+              </Button>
             </ButtonBox>
           </BuskedBox>
         )}
@@ -217,7 +225,7 @@ const Title = styled("h1", {
   margin: "20px 0",
 });
 
-const Price = styled("p", {
+const Price = styled("span", {
   display: "flex",
   alignItems: "center",
   fontWeight: "600",

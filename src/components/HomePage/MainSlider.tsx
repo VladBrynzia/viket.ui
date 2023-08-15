@@ -5,7 +5,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { styled } from "../../../stitches.config";
-import slider from "../../../static/images/slider.png";
+import mono from "../../../static/images/mono.png";
+import prof from "../../../static/images/prof.png";
+import sota from "../../../static/images/sota.png";
+import mono2 from "../../../static/images/mono2.png";
 import arrow from "../../../static/icons/slider-arrow.png";
 import shop from "../../../static/icons/shop.png";
 import { Link } from "gatsby-plugin-react-i18next";
@@ -13,23 +16,23 @@ import { Link } from "gatsby-plugin-react-i18next";
 const policarbonSlider = [
   {
     id: "1",
-    name: "Сотовый поликарбонат",
-    image: slider,
+    name: "Монолитный поликарбонат",
+    image: mono,
   },
   {
     id: "2",
     name: "Сотовый поликарбонат",
-    image: slider,
+    image: sota,
   },
   {
     id: "3",
-    name: "Сотовый поликарбонат",
-    image: slider,
+    name: "Профилированный поликарбонат",
+    image: prof,
   },
   {
     id: "4",
-    name: "Сотовый поликарбонат",
-    image: slider,
+    name: "Монолитный поликарбонат",
+    image: mono2,
   },
 ];
 
@@ -60,7 +63,7 @@ export const MainSlider = () => {
             return (
               <StyledSwiperSlide key={i}>
                 <Text>{slide.name}</Text>
-                <Image src={slider} alt="policarbon" />
+                <Image src={slide.image} alt="policarbon" />
               </StyledSwiperSlide>
             );
           })}
@@ -197,9 +200,10 @@ const Text = styled("p", {
   borderRadius: "0px 10px",
   color: "$white",
   padding: "8px 4px",
-  maxWidth: 170,
+  maxWidth: 200,
+  width: "min-content",
   "@md": {
-    maxWidth: 395,
+    maxWidth: 440,
     padding: "16px 8px",
     fontSize: 42,
     lineHeight: "49px",

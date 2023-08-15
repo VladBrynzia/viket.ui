@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { ProductPageData } from "../../pages/products/[id]";
+import React, { useEffect, useState } from "react";
 import { styled } from "../../../stitches.config";
 import { Loading } from "../../ui/common/Loading";
 import { FullProductInfo } from "./FullProductInfo";
@@ -7,25 +6,100 @@ import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import shop from "../../../static/icons/shop.png";
 import { useShopContext } from "../../context/ShopPopupContext";
 import { keyframes } from "@stitches/react";
+import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
+import { sendRequestToAPI } from "../../api/api";
+import { ProductInfoType } from "../../types/product";
 
 type Props = {
-  serverData: ProductPageData;
+  pageContext: PageContext;
+  location: Location;
 };
 
-export const ProductInfo: React.FC<Props> = ({ serverData }) => {
-  const { product } = serverData;
+export const ProductInfo: React.FC<Props> = ({ pageContext, location }) => {
+  const [product, setProduct] = useState<ProductInfoType>();
+
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    const getData = async () => {
+      const lastSlashIndex = location.pathname.lastIndexOf("/");
+      const pageId = location.pathname.substring(lastSlashIndex + 1);
+
+      try {
+        const { data } = await sendRequestToAPI(
+          `query($language: I18NLocaleCode, $filters: ProductFiltersInput)  {
+            product: products(locale: $language, filters: $filters) {
+              data {
+                id
+                attributes {
+                  name
+                  description
+                  characteristics
+                  haveInStock
+                  thickness
+                  color
+                  mainImage {
+                    data {
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                  slug
+                  images {
+                    data {
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                  sheetOption {
+                    pricePerMeter
+                    totalPrice
+                    listSize
+                    haveInStock
+                  }
+                }
+              }
+            }
+          }`,
+          {
+            language: pageContext.language,
+            filters: { slug: { eq: pageId } },
+          },
+          {}
+        );
+        setProduct(data.data.product.data[0].attributes);
+      } catch (err) {
+        return err;
+      } finally {
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (product) {
+      setIsLoading(false);
+    }
+  }, [product]);
 
   return (
     <Container>
-      <LinkBox>
-        <Breadcrumb
-          way={[
-            { link: "/products", text: "Продукция" },
-            { link: `/products/${product.slug}`, text: product.name },
-          ]}
-        />
-      </LinkBox>
-      {product ? <FullProductInfo product={product} /> : <Loading />}
+      {!isLoading && product ? (
+        <>
+          <LinkBox>
+            <Breadcrumb
+              way={[
+                { link: "/products", text: "Продукция" },
+                { link: `/products/${product.slug}`, text: product.name },
+              ]}
+            />
+          </LinkBox>
+          <FullProductInfo product={product} />
+        </>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 };

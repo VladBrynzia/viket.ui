@@ -41,7 +41,9 @@ export const FullProductInfo: React.FC<Props> = ({ product }) => {
     if (el.type === "paragraph") {
       const finalValue = addTargetBlank(el.data.text);
       return (
-        <CharacteristicText dangerouslySetInnerHTML={{ __html: `${finalValue}` }}></CharacteristicText>
+        <CharacteristicText
+          dangerouslySetInnerHTML={{ __html: `${finalValue}` }}
+        ></CharacteristicText>
       );
     }
     if (el.type === "header") {
@@ -179,7 +181,7 @@ export const FullProductInfo: React.FC<Props> = ({ product }) => {
         </LeftBox>
         <RightBox>
           <Title>{product.name}</Title>
-          <Text>Выберите размер листа</Text>
+          <Text>Выберите размер листа/ профиль длинна профиля / фурнитура в штуках или в метрах</Text>
           <List>
             {product.sheetOption.map((el, i) => (
               <Item key={i}>
@@ -313,13 +315,16 @@ export const List = styled("ul", {
   listStyle: "none",
 });
 
-export const Item = styled("li", {});
+export const Item = styled("li", {
+  cursor: "pointer",
+});
 
-export const ItemBox = styled("div", {
+export const ItemBox = styled("label", {
   display: "flex",
   alignItems: "center",
   gap: 8,
   margin: "0 0 10px",
+  cursor: "pointer",
 });
 
 export const Box = styled("div", {
@@ -551,7 +556,6 @@ const H3 = styled("h3", {
   fontSize: "17px",
   lineHeight: "19px",
   margin: "0 0 10px",
-
 });
 
 const H4 = styled("h4", {
