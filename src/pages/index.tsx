@@ -1,7 +1,7 @@
 import * as React from "react";
-import { graphql, HeadFC } from "gatsby";
-import { HomePage } from "../components/Home/pages/HomePage";
+import { graphql } from "gatsby";
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
+import { HomePage } from "../features/HomePage/HomePage";
 
 type Props = {
   pageContext: PageContext;

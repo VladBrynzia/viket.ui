@@ -46,80 +46,8 @@ body {
     scroll-behavior: smooth;
 }
 
-a {
-    color: #9900CC;
-    text-decoration: none;
-}
-
-strong {
-  font-weight: 600;
-}
-
-*, p {
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif !important;
-}
-
 .no-scroll {
   overflow: hidden !important;
-}
-
-@media (min-width: 1280px) {
-  .slider-button-next {
-    position: absolute;
-    cursor: pointer;
-    margin-right: 20px;
-    right: 0;
-    top: 202px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #9900CC;
-    border-radius: 100%;
-    background: #9900CC;
-    background-image: url(../../static/icons/next.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    z-index: 10;
-    transition: all 300ms ease;
-  }
-  .slider-button-next:hover {
-    background: white;
-    background-image: url(../../static/icons/next-purple.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    border-radius: 100%;
-    z-index: 10;
-  }
-}
-
-@media (min-width: 1280px) {
-  .slider-button-prev {
-    position: absolute;
-    cursor: pointer;
-    margin-left: 20px;
-    left: 0;
-    top: 202px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #9900CC;
-    border-radius: 100%;
-    background: #9900CC;
-    background-image: url(../../static/icons/next.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    transform: rotate(180deg);
-    z-index: 10;
-    transition: all 300ms ease;
-  }
-  .slider-button-prev:hover {
-    background: white;
-    background-image: url(../../static/icons/next-purple.png) !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    transform: rotate(180deg);
-    border-radius: 100%;
-    z-index: 10;
-  }
 }
 
 ::-webkit-scrollbar-track {border-radius: 4px;}
@@ -127,20 +55,80 @@ strong {
 ::-webkit-scrollbar-thumb {border-radius: 4px;background: #4a4a4a;}
 :hover::-webkit-scrollbar-thumb {background: #6a7d9b;}
 
-.alert-enter {
-  opacity: 0;
-  transform: scale(0.9);
+.swiper-pagination-progressbar {
+  bottom: 30px !important;
+  top: auto !important;
+  left: auto !important;
+  right: 10px !important;
+  width: 60px !important;
+  border-radius: 70px !important;
+  background: rgba(0, 0, 0, 0.2) !important;
 }
-.alert-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
+
+.swiper-pagination-progressbar::after {
+  display: block !important;
+  content: '';
+  width: 130px !important;
+  height: 30px !important;
+  position: absolute;
+  top: -50%;
+  right: -20px;
+  transform: translateY(-40%);
+  background: rgba(32, 35, 40, 0.6);
+  border-radius: 4px 0px 0px 4px;
+  z-index: 9;
 }
-.alert-exit {
-  opacity: 1;
+
+.swiper-pagination-progressbar-fill {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-radius: 70px !important;
 }
-.alert-exit-active {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
+
+@media (min-width: 1280px) {
+  .swiper-pagination-progressbar {
+    bottom: 43px !important;
+    top: auto !important;
+    left: auto !important;
+    right: 50px !important;
+    width: 160px !important;
+  }
+  .swiper-pagination-progressbar::after {
+    width: 360px !important;
+    height: 90px !important;
+    right: -50px;
+    border-radius: 10px 0px 0px 0px;
+    top: -50%;
+    transform: translateY(-50%);
+  }
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #92afd6;
+  border-radius: 100%;
+  display: grid;
+  place-content: center;
+  background-color: white;
+  cursor: pointer;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #FFAE13;
+  transform-origin: center;
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
 }

@@ -1,250 +1,194 @@
 import React from "react";
 import { styled } from "../../../stitches.config";
 import { Link, useTranslation } from "gatsby-plugin-react-i18next";
+import { SocialMedia } from "../../ui/common/SocialMedia/SocialMedia";
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <Container>
-      <ContentContainer>
-        <Box>
-          <a href="tel:+421944260246 ">
-            <ContentBox>
-              <Image src="/icons/phone.svg" alt="phone" />
-              <Phone>+421 944 260 246 </Phone>
-            </ContentBox>
-          </a>
-          <a
-            href="https://www.google.com/maps/place/Monopol+space/@48.719391,21.25327,5z/data=!4m5!3m4!1s0x0:0xd092b02769f54c93!8m2!3d48.7193912!4d21.2532697?hl=ru-RU"
-            target="_blank"
-          >
-            <ContentBox>
-              <Image src="/icons/address.svg" alt="address" />
-              <Text>{t("footer.info.address")}</Text>
-            </ContentBox>
-          </a>
-          <a href="mailto:ahoy@vander.consulting">
-            <ContentBox>
-              <Image src="/icons/mail.svg" alt="mail" />
-              <Text>ahoy@vander.consulting</Text>
-            </ContentBox>
-          </a>
-        </Box>
-        <AboutBox>
-          <InfoBox>
-            <Title>{t("footer.info.about")}</Title>
-            <Text>{t("footer.info.aboutInfo")}</Text>
-          </InfoBox>
-          <InfoBox>
-            <Title>{t("footer.info.company")}</Title>
-            <StyledGatsbyLink to="/">
-              {t("footer.info.aboutCompany")}
-            </StyledGatsbyLink>
-            <StyledGatsbyLink to="/">
-              {t("footer.info.privacy")}
-            </StyledGatsbyLink>
-            <StyledLink
-              href="https://rebrand.ly/vander-consulting/feedback"
-              target="_blank"
-            >
-              {t("footer.info.feedback")}
+      <FooterContentContainer>
+        <FooterBox>
+          <Box>
+            <Link to="/">
+              <Image src="/icons/logo.svg" alt="logo" />
+            </Link>
+          </Box>
+          <Box>
+            <Title>Меню</Title>
+            <LineImage src="/icons/footer-item.svg" alt="line" />
+            <StyledLink to="/">{t("header.nav.main")}</StyledLink>
+            <StyledLink to="/products">{t("header.nav.products")}</StyledLink>
+            <StyledLink to="/solutions">{t("header.nav.solutions")}</StyledLink>
+            <StyledLink to="/technical">{t("header.nav.technical")}</StyledLink>
+            <StyledLink to="/contact-us">
+              {t("header.nav.contactUs")}
             </StyledLink>
-          </InfoBox>
-          <InfoBox>
-            <Title>{t("footer.info.services")}</Title>
-            <StyledLink
-              href="https://rebrand.ly/launch-control"
-              target="_blank"
-            >
-              {t("footer.info.personal")}
-            </StyledLink>
-            <StyledLink href="https://rebrand.ly/mansulting" target="_blank">
-              {t("footer.info.corporate")}
-            </StyledLink>
-            <StyledLink
-              href="https://rebrand.ly/the-force-advisory"
-              target="_blank"
-            >
-              {t("footer.info.advisory")}
-            </StyledLink>
-          </InfoBox>
-        </AboutBox>
+          </Box>
+          <Box>
+            <Title>Услуги</Title>
+            <LineImage src="/icons/footer-item.svg" alt="line" />
+            <StyledText>Порезка листов</StyledText>
+            <StyledText>Доставка поликарбоната</StyledText>
+            <StyledText>Монтаж поликарбоната </StyledText>
+          </Box>
+          <Box>
+            <Title>Как с нами связаться</Title>
+            <LineImage src="/icons/footer-item.svg" alt="line" />
+            <SocialMedia />
+          </Box>
+        </FooterBox>
+      </FooterContentContainer>
+      <CopyrightContentContainer>
         <CopyrightBox>
+          <CopyrightName>{t("footer.info.copyrightName")}</CopyrightName>
           <CopyrightText>{t("footer.info.copyright")}</CopyrightText>
+          <Empty></Empty>
         </CopyrightBox>
-      </ContentContainer>
+      </CopyrightContentContainer>
     </Container>
   );
 };
 
-const Container = styled("div", {
-  padding: "30px 15px",
-  margin: "20px 0 0",
-  "@sm": {
-    padding: "30px 15px",
-  },
+const Container = styled("footer", {});
+
+const Empty = styled("div", {
+  display: "none",
   "@md": {
-    padding: "35px 25px",
-    margin: "60px 0 0",
-  },
-  "@lg": {
-    padding: "40px",
+    display: "block",
   },
 });
 
-const ContentContainer = styled("div", {
+const FooterContentContainer = styled("div", {
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
   gap: 30,
-  width: "90%",
+  background: "rgba(0, 0, 255, 0.05)",
   margin: "0 auto",
-  "&>div:not(:last-child)": {
-    borderBottom: "1px solid #E1DFDF",
+});
+
+const CopyrightContentContainer = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+  gap: 30,
+  margin: "0 auto",
+  padding: "100px 20px",
+  maxWidth: "1280px",
+  "@md": {
+    padding: "100px 20px",
   },
-  "@lg": {
-    width: "1240px",
-    gap: 50,
+});
+
+const FooterBox = styled("div", {
+  maxWidth: "1280px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  gap: 30,
+  padding: "30px 20px",
+  boxSizing: "border-box",
+  "@sm": {
+    flexDirection: "row",
+  },
+  "@md": {
+    width: "100%",
+    margin: "0 auto",
+    padding: "60px 20px",
   },
 });
 
 const Box = styled("div", {
   display: "flex",
-  justifyContent: "space-between",
-  paddingBottom: 40,
   flexDirection: "column",
-  gap: 20,
-  "@xxs": {
-    alignItems: "center",
-  },
-  "@sm": {
-    flexDirection: "row",
-    paddingBottom: 60,
-  },
+  gap: 10,
 });
 
-const AboutBox = styled("div", {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "column",
-  paddingBottom: 20,
-  gap: 20,
-  "@sm": {
-    flexDirection: "row",
-    paddingBottom: 30,
-    alignItems: "flex-start",
-  },
-  "@lg": {
-    gap: 50,
-    justifyContent: "flex-start",
-  },
-});
-
-const InfoBox = styled("div", {
-  display: "flex",
-  alignItems: "center",
-  flexDirection: "column",
-  "@xs": {
-    maxWidth: "500px",
-  },
-  "@sm": {
-    marginRight: "60px",
-    alignItems: "start",
-    maxWidth: "300px",
-  },
+const Title = styled("h2", {
+  textTransform: "uppercase",
+  fontWeight: 700,
+  fontSize: 14,
+  lineHeight: "16px",
+  margin: "12px 0 0",
   "@md": {
-    maxWidth: "400px",
-    marginRight: "70px",
+    fontSize: 16,
+    lineHeight: "19px",
   },
-  "@lg": {
-    maxWidth: "450px",
-    marginRight: "100px",
+});
+
+const StyledText = styled("p", {
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "170%",
+  color: "$black",
+  textDecoration: "none",
+  width: "fit-content",
+});
+
+const StyledLink = styled(Link, {
+  position: "relative",
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "170%",
+  color: "$black",
+  textDecoration: "none",
+  width: "fit-content",
+  transition: "all 300ms ease",
+  "&:hover": {
+    color: "#FD7E08",
+    "&:after": {
+      content: "",
+      position: "absolute",
+      top: 20,
+      left: 0,
+      right: 0,
+      height: 1,
+      borderBottom: "1px solid #FD7E08",
+    },
   },
+});
+
+const Image = styled("img", {
+  width: "100px",
+});
+
+const LineImage = styled("img", {
+  width: 25,
+  height: 3,
+  marginBottom: 10,
 });
 
 const CopyrightBox = styled("div", {
   display: "flex",
-  justifyContent: "center",
-});
-
-const ContentBox = styled("div", {
-  display: "flex",
-  alignItems: "center",
-  gap: 10,
+  justifyContent: "space-between",
+  gap: 20,
 });
 
 const CopyrightText = styled("p", {
-  color: "#000",
+  margin: 0,
+  color: "#171717",
   fontWeight: "300",
-  fontSize: "16px",
-  lineHeight: "38px",
   textAlign: "center",
-});
-
-const Image = styled("img", {
-  height: "35px",
+  fontSize: "8px",
+  lineHeight: "130%",
   "@md": {
-    height: "40px",
+    fontSize: "15px",
+    lineHeight: "130%",
   },
 });
 
-const Title = styled("h1", {
-  color: "#000",
-  fontWeight: "400",
-  fontSize: "24px",
-  lineHeight: "30px",
-  margin: "0 0 8px",
-});
-
-const Text = styled("p", {
-  color: "#000",
-  fontWeight: "300",
-  fontSize: "16px",
-  lineHeight: "24px",
-  margin: "0",
-  textAlign: "justify",
+const CopyrightName = styled("p", {
+  margin: 0,
+  color: "#171717",
+  fontWeight: "700",
+  textAlign: "center",
+  fontSize: "9px",
+  lineHeight: "11px",
   "@md": {
-    fontSize: "18px",
-    lineHeight: "22px",
-  },
-});
-
-const StyledGatsbyLink = styled(Link, {
-  color: "#000",
-  fontWeight: "300",
-  fontSize: "16px",
-  lineHeight: "20px",
-  margin: "0 0 8px",
-  "@md": {
-    width: 240,
-    fontSize: "18px",
-    lineHeight: "22px",
-  },
-});
-
-const StyledLink = styled("a", {
-  color: "#000",
-  fontWeight: "300",
-  fontSize: "16px",
-  lineHeight: "20px",
-  margin: "0 0 8px",
-  "@md": {
-    width: 240,
-    fontSize: "18px",
-    lineHeight: "22px",
-  },
-});
-
-const Phone = styled("p", {
-  color: "#000",
-  fontWeight: "300",
-  fontSize: "18px",
-  lineHeight: "22px",
-  margin: "0 0 8px",
-  "@md": {
-    fontSize: "24px",
-    lineHeight: "30px",
+    fontSize: "17px",
+    lineHeight: "21px",
   },
 });

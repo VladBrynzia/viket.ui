@@ -1,7 +1,9 @@
 {
-  "header.nav.about": "Expositio",
-  "header.nav.services": "Services",
-  "header.nav.projects": "Our Work",
-  "header.nav.blog": "Blog",
-  "header.nav.contact": "Contact"
+  "header.nav.main": "Главная",
+  "header.nav.products": "Продукция",
+  "header.nav.solutions": "Готовые решения",
+  "header.nav.technical": "Технический раздел",
+  "header.nav.contactUs": "Контакты",
+  "header.nav.address": "г. Одесса, пер. Чапаева 5",
+  "header.nav.phone": "тел. 067-485-09-47"
 }

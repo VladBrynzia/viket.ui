@@ -4,11 +4,11 @@ import dotenv from 'dotenv';
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 const trackId = process.env.GATSBY_GOOGLE_ANALYTICS_ID;
-const siteUrl = 'https://vander.consulting' || 'http://localhost:8000/';
+const siteUrl = 'https://viket.com.ua' || 'http://localhost:8000/';
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `vander.consulting`,
+    title: `viket`,
     siteUrl: siteUrl,
   },
   graphqlTypegen: true,
@@ -58,7 +58,7 @@ const config: GatsbyConfig = {
       resolve: `gatsby-plugin-react-i18next`,
       options: {
         localeJsonSourceName: `locale`,
-        languages: [`en`, `sk`],
+        languages: [`en`],
         redirect: false,
         defaultLanguage: `en`,
         siteUrl,

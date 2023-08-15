@@ -1,10 +1,12 @@
 import React, { ReactElement } from "react";
-import { Navigation } from "../Navigation/Navigation";
 import { Footer } from "../Footer/Footer";
 import { Helmet } from "gatsby-plugin-react-i18next";
 import favicon from "../../../static/icons/favicon.png";
 import { Toaster } from "react-hot-toast";
-import { ScrollToTop } from "../../ui/common/ScrollToTop";
+import { Header } from "../Header/Header";
+import { CallUs } from "../../ui/common/CallUs";
+import { styled } from "../../../stitches.config";
+import { ShopPopupProvider } from "../../context/ShopPopupContext";
 
 type Props = {
   children: ReactElement;
@@ -12,20 +14,30 @@ type Props = {
 
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <>
+    <ShopPopupProvider>
       <Helmet>
-        <link id="favicon-icon" rel="icon" href={favicon} />
-        <script
-          id="cookieyes"
-          type="text/javascript"
-          src="https://cdn-cookieyes.com/client_data/b396c37ff204a73a04d5b4c0/script.js"
-        ></script>
+        {/* <link id="favicon-icon" rel="icon" href={favicon} /> */}
       </Helmet>
-      <Navigation />
-      {children}
-      <Footer />
-      <Toaster position="bottom-right" reverseOrder={false} />
-      <ScrollToTop />
-    </>
+      <LayoutContainer>
+        <Header />
+        <Main>{children}</Main>
+        <Footer />
+        <CallUs />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{ duration: 3000 }}
+        />
+      </LayoutContainer>
+    </ShopPopupProvider>
   );
 };
+
+const LayoutContainer = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100vh",
+});
+
+const Main = styled("main", {
+  flex: 1,
+});
