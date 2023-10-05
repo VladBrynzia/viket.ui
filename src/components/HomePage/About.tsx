@@ -10,13 +10,10 @@ export const About = () => {
         </BoxReverse>
         <Info>
           <Title>Коротко о нас </Title>
-          <SubTitle>
-            Наша фирма доставит и установит поликарбонат в лучшем виде
-          </SubTitle>
           <Line />
           <MobileImage src="/images/about.png" alt="about" />
           <Text>
-            Компания «viket» поставляет листовые полимерные материалы
+            Компания «VIKET» поставляет листовые полимерные материалы
             европейских производителей на рынок Украины с 2015 года. Мы
             реализуем сотовый, монолитный, профилированный поликарбонат и
             комплектующие для монтажа с собственных складских помещений общей
@@ -93,6 +90,7 @@ const Image = styled("img", {
 
 const Title = styled("h2", {
   textAlign: "center",
+  textTransform: "uppercase",
   fontWeight: 700,
   fontSize: 16,
   lineHeight: "19px",

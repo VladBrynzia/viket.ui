@@ -10,6 +10,7 @@ import { Pagination } from "./Pagination";
 import { useShopContext } from "../../context/ShopPopupContext";
 import { Link } from "gatsby-plugin-react-i18next";
 import { Loading } from "../../ui/common/Loading";
+import { Helmet } from "react-helmet";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -180,8 +181,29 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     }
   }, [products, thickness, color]);
 
+  const title = "Продукция";
+  const description =
+    "Продажа сотового, монолитного и профилированого поликарбоната";
+
   return (
     <>
+      <Helmet defaultTitle={title}>
+        <meta
+          name="keywords"
+          content="поликарбон, поликарбонат, теплицы, навесы, продажа поликарбоната, сотовый поликарбонат, монолитный поликарбонат, магазин поликарботана"
+        />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:title" content="Policarbonat VIKET" />
+        <meta property="twitter:title" content="Policarbonat VIKET" />
+
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:description" content={description} />
+
+        <meta property="og:site_name" content="policarbonat-viket" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {!isLoading ? (
         <Loading />
       ) : (

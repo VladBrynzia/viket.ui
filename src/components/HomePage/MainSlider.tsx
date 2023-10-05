@@ -5,7 +5,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { styled } from "../../../stitches.config";
-import mono from "../../../static/images/mono.png";
 import prof from "../../../static/images/prof.png";
 import sota from "../../../static/images/sota.png";
 import mono2 from "../../../static/images/mono2.png";
@@ -16,21 +15,16 @@ import { Link } from "gatsby-plugin-react-i18next";
 const policarbonSlider = [
   {
     id: "1",
-    name: "Монолитный поликарбонат",
-    image: mono,
-  },
-  {
-    id: "2",
     name: "Сотовый поликарбонат",
     image: sota,
   },
   {
-    id: "3",
+    id: "2",
     name: "Профилированный поликарбонат",
     image: prof,
   },
   {
-    id: "4",
+    id: "3",
     name: "Монолитный поликарбонат",
     image: mono2,
   },
@@ -147,6 +141,8 @@ const Image = styled("img", {
   width: "100%",
   height: "100%",
   minHeight: 100,
+  maxHeight: 560,
+  objectFit: "cover",
   borderRadius: "0px 5px",
   "@md": {
     minHeight: 300,

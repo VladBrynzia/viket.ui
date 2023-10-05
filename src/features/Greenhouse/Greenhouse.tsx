@@ -6,6 +6,7 @@ import { sendRequestToAPI } from "../../api/api";
 import { GreenhouseType } from "../../types/greenhouse";
 import { addTargetBlank } from "../Products/FullProductInfo";
 import { ParseGreenhouse } from "./ParseGreenhouse";
+import { Helmet } from "react-helmet";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -46,8 +47,29 @@ export const Greenhouse: React.FC<Props> = ({ pageContext }) => {
     getData();
   }, []);
 
+  const title = "Теплицы из поликарбоната";
+  const description =
+    "Теплиці под ключ из сотового, монолитного и профилированого поликарбоната";
+
   return (
     <>
+      <Helmet defaultTitle={title}>
+        <meta
+          name="keywords"
+          content="поликарбон, поликарбонат, теплицы, навесы, продажа поликарбоната, сотовый поликарбонат, монолитный поликарбонат, магазин поликарботана"
+        />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:title" content="Policarbonat VIKET" />
+        <meta property="twitter:title" content="Policarbonat VIKET" />
+
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:description" content={description} />
+
+        <meta property="og:site_name" content="policarbonat-viket" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Breadcrumb
         way={[
           { link: "/technical", text: "Технический раздел" },
