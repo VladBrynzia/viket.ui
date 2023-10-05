@@ -3,14 +3,36 @@ import React from "react";
 import { styled } from "../../../stitches.config";
 import { MapSection } from "../../components/Contact/MapSection";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
+import { Helmet } from "react-helmet";
 
 type Props = {
   pageContext: PageContext;
 };
 
 export const Contact: React.FC<Props> = ({ pageContext }) => {
+  const title = "Контакты";
+  const description =
+    "Контакты для обратной связи. Будем рады Вам помочь!";
+
   return (
     <>
+      <Helmet defaultTitle={title}>
+        <meta
+          name="keywords"
+          content="поликарбон, поликарбонат, теплицы, навесы, продажа поликарбоната, сотовый поликарбонат, монолитный поликарбонат, магазин поликарботана"
+        />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:title" content="Policarbonat VIKET" />
+        <meta property="twitter:title" content="Policarbonat VIKET" />
+
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:description" content={description} />
+
+        <meta property="og:site_name" content="policarbonat-viket" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Breadcrumb way={[{ link: "/contact-us", text: "Контакты" }]} />
       <Container>
         <Title>Наши контактные данные</Title>

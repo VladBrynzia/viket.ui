@@ -3,14 +3,36 @@ import React from "react";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import { Link } from "gatsby-plugin-react-i18next";
+import { Helmet } from "react-helmet";
 
 type Props = {
   pageContext: PageContext;
 };
 
 export const Technical: React.FC<Props> = ({ pageContext }) => {
+  const title = "Технический раздел";
+  const description =
+    "ТТехническая документация по установке всех типов поликарбоната";
+
   return (
     <>
+      <Helmet defaultTitle={title}>
+        <meta
+          name="keywords"
+          content="поликарбон, поликарбонат, теплицы, навесы, продажа поликарбоната, сотовый поликарбонат, монолитный поликарбонат, магазин поликарботана"
+        />
+        <meta property="og:type" content="website" />
+
+        <meta property="og:title" content="Policarbonat VIKET" />
+        <meta property="twitter:title" content="Policarbonat VIKET" />
+
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:description" content={description} />
+
+        <meta property="og:site_name" content="policarbonat-viket" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <LinkBox>
         <Breadcrumb
           way={[{ link: "/technical", text: "Технический раздел" }]}
@@ -22,55 +44,53 @@ export const Technical: React.FC<Props> = ({ pageContext }) => {
       </LinkBox>
       <Container>
         <Title>Руководство по монтажу</Title>
+        <DownloadContainer>
+          <DownloadButton
+            href="https://drive.google.com/file/d/1-Ez4kEAYRV9TI0EE2w6ooUlAlYxrGyqK/view?usp=drive_link"
+            target="_blank"
+          >
+            Руководство по применению и установке сотового поликарбоната
+          </DownloadButton>
+          <DownloadButton
+            href="https://drive.google.com/file/d/17c8wFvOUkz3IgmNWNTZAGQePkM22B3gr/view?usp=drive_link"
+            target="_blank"
+          >
+            Руководство по применению и установке монолитного поликарбоната
+          </DownloadButton>
+        </DownloadContainer>
         <Box>
-          <Image src="/images/tech-1.png" alt="tech" />
-          <Text>
-            Lorem Ipsum - это текст-"рыба", часто используемый в печати и
-            вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на
-            латинице с начала XVI века. В то время некий безымянный печатник
-            создал большую коллекцию размеров и форм шрифтов, используя Lorem
-            Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил
-            без заметных изменений пять веков, но и перешагнул в электронный
-            дизайн. Его популяризации в новое время послужили публикация листов
-            Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее
-            время, программы электронной вёрстки типа Aldus PageMaker, в
-            шаблонах которых используется Lorem Ipsum.
-          </Text>
+          <Image src="/images/tech-2.png" alt="tech" />
         </Box>
         <BoxReverse>
-          <Text>
-            Lorem Ipsum - это текст-"рыба", часто используемый в печати и
-            вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на
-            латинице с начала XVI века. В то время некий безымянный печатник
-            создал большую коллекцию размеров и форм шрифтов, используя Lorem
-            Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил
-            без заметных изменений пять веков, но и перешагнул в электронный
-            дизайн. Его популяризации в новое время послужили публикация листов
-            Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее
-            время, программы электронной вёрстки типа Aldus PageMaker, в
-            шаблонах которых используется Lorem Ipsum.
-          </Text>
-          <Image src="/images/tech-2.png" alt="tech" />
+          <Image src="/images/tech-3.png" alt="tech" />
         </BoxReverse>
         <Box>
-          <Image src="/images/tech-3.png" alt="tech" />
-          <Text>
-            Lorem Ipsum - это текст-"рыба", часто используемый в печати и
-            вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на
-            латинице с начала XVI века. В то время некий безымянный печатник
-            создал большую коллекцию размеров и форм шрифтов, используя Lorem
-            Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил
-            без заметных изменений пять веков, но и перешагнул в электронный
-            дизайн. Его популяризации в новое время послужили публикация листов
-            Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее
-            время, программы электронной вёрстки типа Aldus PageMaker, в
-            шаблонах которых используется Lorem Ipsum.
-          </Text>
+          <Image src="/images/tech-1.png" alt="tech" />
         </Box>
       </Container>
     </>
   );
 };
+
+const DownloadContainer = styled("div", {
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: 20,
+  flexDirection: "column",
+  "@md": {
+    flexDirection: "row",
+  },
+});
+
+const DownloadButton = styled("a", {
+  border: "none",
+  maxWidth: 280,
+  fontWeight: 500,
+  fontSize: 12,
+  lineHeight: "14px",
+  color: "#171717",
+  cursor: "pointer",
+});
 
 const Container = styled("section", {
   padding: "30px 20px",
@@ -81,7 +101,6 @@ const Container = styled("section", {
   margin: "0 auto",
   "@md": {
     padding: "30px 20px 100px",
-    gap: 60,
   },
 });
 
@@ -91,7 +110,7 @@ const Title = styled("h2", {
   fontSize: 18,
   lineHeight: "21px",
   color: "#171717",
-  margin: "0 0 30px",
+  margin: "0",
   "@md": {
     fontSize: 24,
     lineHeight: "28px",
@@ -141,7 +160,7 @@ const BoxReverse = styled("div", {
 
 const Image = styled("img", {
   width: "100%",
-  maxWidth: 504,
+  maxWidth: 1000,
   borderRadius: 5,
   margin: "0 auto",
 });

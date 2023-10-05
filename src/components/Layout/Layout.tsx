@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Footer } from "../Footer/Footer";
 import { Helmet } from "gatsby-plugin-react-i18next";
-import favicon from "../../../static/icons/favicon.png";
+import favicon from "../../../static/icons/logo.svg";
 import { Toaster } from "react-hot-toast";
 import { Header } from "../Header/Header";
 import { CallUs } from "../../ui/common/CallUs";
@@ -16,7 +16,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <ShopPopupProvider>
       <Helmet>
-        {/* <link id="favicon-icon" rel="icon" href={favicon} /> */}
+        <link id="favicon-icon" rel="icon" href={favicon} />
       </Helmet>
       <LayoutContainer>
         <Header />
