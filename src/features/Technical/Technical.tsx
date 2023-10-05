@@ -46,26 +46,26 @@ export const Technical: React.FC<Props> = ({ pageContext }) => {
         <Title>Руководство по монтажу</Title>
         <DownloadContainer>
           <DownloadButton
-            href="https://drive.google.com/drive/u/0/folders/1QYU-BpTujn1DqqjypMpeT8dHGnmEjhMd"
+            href="https://drive.google.com/file/d/1-Ez4kEAYRV9TI0EE2w6ooUlAlYxrGyqK/view?usp=drive_link"
             target="_blank"
           >
             Руководство по применению и установке сотового поликарбоната
           </DownloadButton>
           <DownloadButton
-            href="https://drive.google.com/drive/u/0/folders/1QYU-BpTujn1DqqjypMpeT8dHGnmEjhMd"
+            href="https://drive.google.com/file/d/17c8wFvOUkz3IgmNWNTZAGQePkM22B3gr/view?usp=drive_link"
             target="_blank"
           >
             Руководство по применению и установке монолитного поликарбоната
           </DownloadButton>
         </DownloadContainer>
         <Box>
-          <Image src="/images/tech-1.png" alt="tech" />
+          <Image src="/images/tech-2.png" alt="tech" />
         </Box>
         <BoxReverse>
-          <Image src="/images/tech-2.png" alt="tech" />
+          <Image src="/images/tech-3.png" alt="tech" />
         </BoxReverse>
         <Box>
-          <Image src="/images/tech-3.png" alt="tech" />
+          <Image src="/images/tech-1.png" alt="tech" />
         </Box>
       </Container>
     </>

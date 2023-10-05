@@ -240,22 +240,24 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                 <Left>
                   <SortTitle>Толщина</SortTitle>
                   <SortParamBox>
-                    {uniqueThickness.map((el: string, i: number) => (
-                      <SortParam
-                        key={i}
-                        onClick={() => {
-                          if (!thickness || thickness !== el) {
-                            setThickness(el);
-                          }
-                          if (thickness === el) {
-                            setThickness(undefined);
-                          }
-                        }}
-                      >
-                        <Input type="checkbox" checked={thickness === el} />
-                        <Text>{el} мм</Text>
-                      </SortParam>
-                    ))}
+                    {uniqueThickness
+                      .sort((a, b) => +a - +b)
+                      .map((el: string, i: number) => (
+                        <SortParam
+                          key={i}
+                          onClick={() => {
+                            if (!thickness || thickness !== el) {
+                              setThickness(el);
+                            }
+                            if (thickness === el) {
+                              setThickness(undefined);
+                            }
+                          }}
+                        >
+                          <Input type="checkbox" checked={thickness === el} />
+                          <Text>{el} мм</Text>
+                        </SortParam>
+                      ))}
                   </SortParamBox>
                 </Left>
                 <Right>
