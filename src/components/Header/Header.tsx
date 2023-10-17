@@ -61,6 +61,9 @@ export const Header = () => {
           <ExternalReference href="tel:+380674850947">
             <Phone>{t("header.nav.phone")}</Phone>
           </ExternalReference>
+          <ExternalReference href="tel:+380674898218">
+            <Phone>{t("header.nav.phone2")}</Phone>
+          </ExternalReference>
         </InfoBox>
         <ShopImage onClick={toggleShop} src={headerShop} alt="header-shop" />
       </ContentContainer>
