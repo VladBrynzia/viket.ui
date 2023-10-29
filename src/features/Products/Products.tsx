@@ -26,7 +26,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   >([]);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [productsPerPage, setProductsPerPage] = useState<number>(15);
+  const [productsPerPage, setProductsPerPage] = useState<number>(12);
   const [thickness, setThickness] = useState<string | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
 
@@ -37,7 +37,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
       try {
         const { data } = await sendRequestToAPI(
           `query($language: I18NLocaleCode, $pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
-            products(locale: $language, pagination: $pagination, sort: "createdAt:desc", filters: {products_category: {categoryId: {contains: $category}}}) {
+            products(locale: $language, pagination: $pagination, sort: "createdAt:ASC", filters: {products_category: {categoryId: {contains: $category}}}) {
               meta {
                 pagination {
                   pageCount 
@@ -195,11 +195,11 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
         <meta property="og:type" content="website" />
 
         <meta property="og:title" content="Policarbonat VIKET" />
-        <meta property="twitter:title" content="Policarbonat VIKET" />
+        <meta name="twitter:title" content="Policarbonat VIKET" />
 
-        <meta name="description" content={description} />
+        <meta property="description" content={description} />
         <meta property="og:description" content={description} />
-        <meta property="twitter:description" content={description} />
+        <meta name="twitter:description" content={description} />
 
         <meta property="og:site_name" content="policarbonat-viket" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -289,7 +289,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                   <ProductCard key={i} info={el} />
                 ))}
               </CardsBox>
-              {!!products?.length && totalPage > 1 && (
+              {!!filteredProducts?.length && totalPage > 1 && (
                 <Pagination
                   length={totalPage}
                   paginate={paginate}
@@ -420,6 +420,8 @@ const TypeList = styled("ul", {
   padding: 0,
   listStyle: "none",
   display: "flex",
+  flexWrap: "wrap",
+  width: "100%",
   gap: 5,
   "@md": {
     flexDirection: "column",
@@ -437,6 +439,9 @@ const ItemLink = styled(Link, {
   borderRadius: "0px 5px",
   cursor: "pointer",
   background: "$white",
+  width: "100%",
+  maxWidth: 400,
+  margin: "0 auto",
   "@md": {
     textAlign: "start",
     fontSize: 17,
@@ -454,6 +459,9 @@ const Item = styled("li", {
   borderRadius: "0px 5px",
   cursor: "pointer",
   background: "$white",
+  width: "100%",
+  maxWidth: 400,
+  margin: "0 auto",
   "@md": {
     textAlign: "start",
     fontSize: 17,

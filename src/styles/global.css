@@ -55,7 +55,7 @@ body {
 ::-webkit-scrollbar-thumb {border-radius: 4px;background: #4a4a4a;}
 :hover::-webkit-scrollbar-thumb {background: #6a7d9b;}
 
-.swiper-pagination-progressbar {
+/* .swiper-pagination-progressbar {
   bottom: 30px !important;
   top: auto !important;
   left: auto !important;
@@ -100,7 +100,7 @@ body {
     top: -50%;
     transform: translateY(-50%);
   }
-}
+} */
 
 input[type="checkbox"] {
   -webkit-appearance: none;

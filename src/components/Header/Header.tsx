@@ -48,9 +48,6 @@ export const Header = () => {
             </StyledLink>
           ))}
         </List>
-        <MenuBox>
-          <MenuImage src="/icons/menu.svg" alt="menu" onClick={toggle} />
-        </MenuBox>
         <InfoBox>
           <ExternalReference
             href="https://goo.gl/maps/utervsCrHdo6J4L36"
@@ -58,19 +55,30 @@ export const Header = () => {
           >
             <Address>{t("header.nav.address")}</Address>
           </ExternalReference>
-          <ExternalReference href="tel:+380674850947">
-            <Phone>{t("header.nav.phone")}</Phone>
-          </ExternalReference>
           <ExternalReference href="tel:+380674898218">
             <Phone>{t("header.nav.phone2")}</Phone>
           </ExternalReference>
+          <ExternalReference href="tel:+380674850947">
+            <Phone>{t("header.nav.phone")}</Phone>
+          </ExternalReference>
         </InfoBox>
-        <ShopImage onClick={toggleShop} src={headerShop} alt="header-shop" />
+        <Flex>
+          <ShopImage onClick={toggleShop} src={headerShop} alt="header-shop" />
+          <MenuBox>
+            <MenuImage src="/icons/menu.svg" alt="menu" onClick={toggle} />
+          </MenuBox>
+        </Flex>
       </ContentContainer>
       <MobileMenu isOpen={isMenuOpen} toggle={toggle} />
     </Container>
   );
 };
+
+const Flex = styled("div", {
+  display: "flex",
+  gap: 12,
+  alignItems: "center",
+});
 
 const Container = styled("header", {
   padding: "10px 20px",
@@ -83,10 +91,11 @@ const Container = styled("header", {
 });
 
 const ShopImage = styled("img", {
-  display: "none",
+  width: 25,
+  height: 25,
+  cursor: "pointer",
+  marginBottom: 8,
   "@md": {
-    display: "block",
-    cursor: "pointer",
     width: 30,
     height: 30,
   },

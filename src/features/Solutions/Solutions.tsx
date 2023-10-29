@@ -71,11 +71,11 @@ export const Solutions: React.FC<Props> = ({ pageContext }) => {
         <meta property="og:type" content="website" />
 
         <meta property="og:title" content="Policarbonat VIKET" />
-        <meta property="twitter:title" content="Policarbonat VIKET" />
+        <meta name="twitter:title" content="Policarbonat VIKET" />
 
-        <meta name="description" content={description} />
+        <meta property="description" content={description} />
         <meta property="og:description" content={description} />
-        <meta property="twitter:description" content={description} />
+        <meta name="twitter:description" content={description} />
 
         <meta property="og:site_name" content="policarbonat-viket" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -111,11 +111,11 @@ export const Solutions: React.FC<Props> = ({ pageContext }) => {
             Перейти в магазин
             <ShopImage src={shop} alt="shop" />
           </Button>
-          <IndexBox>
+          {/* <IndexBox>
             <Index>0{activeIndex}</Index>
             <Line />
             <SecondIndex>0{policarbonSlider.length}</SecondIndex>
-          </IndexBox>
+          </IndexBox> */}
         </SwiperContainer>
       </section>
       <Container>
@@ -233,7 +233,6 @@ const Container = styled("section", {
   maxWidth: 1280,
   margin: "0 auto",
   gap: 20,
-  width: "100%",
   alignItems: "center",
   "@md": {
     flexDirection: "row",
