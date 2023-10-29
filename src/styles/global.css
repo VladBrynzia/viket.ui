@@ -77,13 +77,13 @@ body {
   background: rgba(32, 35, 40, 0.6);
   border-radius: 4px 0px 0px 4px;
   z-index: 9;
-}
+} */
 
 .swiper-pagination-progressbar-fill {
   background: rgba(0, 0, 0, 0.6) !important;
   border-radius: 70px !important;
 }
-
+/* 
 @media (min-width: 1280px) {
   .swiper-pagination-progressbar {
     bottom: 43px !important;
@@ -100,7 +100,7 @@ body {
     top: -50%;
     transform: translateY(-50%);
   }
-} */
+}  */
 
 input[type="checkbox"] {
   -webkit-appearance: none;
