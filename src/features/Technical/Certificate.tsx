@@ -51,7 +51,7 @@ export const Certificate: React.FC<Props> = ({ pageContext }) => {
     "Сертификаты качества для сотового, монолитного и профилированого поликарбоната";
 
   return (
-    <> 
+    <>
       <Helmet defaultTitle={title}>
         <meta
           name="keywords"
@@ -60,11 +60,11 @@ export const Certificate: React.FC<Props> = ({ pageContext }) => {
         <meta property="og:type" content="website" />
 
         <meta property="og:title" content="Policarbonat VIKET" />
-        <meta property="twitter:title" content="Policarbonat VIKET" />
+        <meta name="twitter:title" content="Policarbonat VIKET" />
 
-        <meta name="description" content={description} />
+        <meta property="description" content={description} />
         <meta property="og:description" content={description} />
-        <meta property="twitter:description" content={description} />
+        <meta name="twitter:description" content={description} />
 
         <meta property="og:site_name" content="policarbonat-viket" />
         <meta name="twitter:card" content="summary_large_image" />

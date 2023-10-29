@@ -9,7 +9,7 @@ type Props = {
 
 export const ProductCard: React.FC<Props> = ({ info }) => {
   return (
-    <Container>
+    <Container to={info.attributes.slug}>
       {info.attributes.mainImage && (
         <CardImageBox>
           <Image
@@ -25,17 +25,19 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
         ) : (
           <No>Нет в наличии</No>
         )}
-        <Button to={info.attributes.slug}>Подробнее</Button>
+        <Button>Подробнее</Button>
       </Box>
     </Container>
   );
 };
 
-const Container = styled("div", {
+const Container = styled(Link, {
   background: "#FAFAFA",
   borderRadius: "0px 5px",
   minHeight: "max-content",
   width: "calc(100%/2 - 10px)",
+  textDecoration: "none",
+  cursor: "pointer",
   "@xs": {
     width: "calc(100%/3 - 13.35px)",
   },
@@ -96,7 +98,7 @@ const Box = styled("div", {
   gap: 20,
 });
 
-const Button = styled(Link, {
+const Button = styled("button", {
   margin: "0 auto",
   textDecoration: "none",
   cursor: "pointer",

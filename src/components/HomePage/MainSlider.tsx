@@ -68,11 +68,11 @@ export const MainSlider = () => {
           Перейти в магазин
           <ShopImage src={shop} alt="shop" />
         </Button>
-        <IndexBox>
+        {/* <IndexBox>
           <Index>0{activeIndex}</Index>
           <Line />
           <SecondIndex>0{policarbonSlider.length}</SecondIndex>
-        </IndexBox>
+        </IndexBox> */}
       </SwiperContainer>
     </section>
   );
