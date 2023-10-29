@@ -37,10 +37,10 @@ export const Technical: React.FC<Props> = ({ pageContext }) => {
         <Breadcrumb
           way={[{ link: "/technical", text: "Технический раздел" }]}
         />
-        <div>
+        <Flex>
           <StyledLink to="/technical/certificate">Сертификаты</StyledLink>
           <StyledLink to="/technical/greenhouse">Теплицы</StyledLink>
-        </div>
+        </Flex>
       </LinkBox>
       <Container>
         <Title>Руководство по монтажу</Title>
@@ -71,6 +71,15 @@ export const Technical: React.FC<Props> = ({ pageContext }) => {
     </>
   );
 };
+
+const Flex = styled("div", {
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: 12,
+  "@md": {
+    flexDirection: "row",
+  },
+});
 
 const DownloadContainer = styled("div", {
   display: "flex",
@@ -121,7 +130,11 @@ const LinkBox = styled("div", {
   maxWidth: 1280,
   margin: "0 auto",
   display: "flex",
+  flexDirection: "column",
   justifyContent: "space-between",
+  "@md": {
+    flexDirection: "row",
+  },
   "&>div": {
     margin: "0",
     "@md": {
@@ -131,11 +144,16 @@ const LinkBox = styled("div", {
 });
 
 const StyledLink = styled(Link, {
-  padding: "70px 20px 10px",
   fontWeight: 500,
-  fontSize: 14,
-  lineHeight: "18px",
+  fontSize: 11,
+  lineHeight: "16px",
   color: "#171717",
+  padding: "15px",
+  "@md": {
+    fontSize: 14,
+    lineHeight: "18px",
+    padding: "70px 20px 10px",
+  },
 });
 
 const Box = styled("div", {
