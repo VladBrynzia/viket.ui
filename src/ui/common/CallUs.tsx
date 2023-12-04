@@ -20,7 +20,7 @@ export const CallUs = () => {
   return (
     <>
       <CSSTransition timeout={500} in={show} unmountOnExit classNames="alert">
-        <Box href="tel:+380674850947">
+        <Box href="tel:+380674898218">
           <ButtonBox>
             <Button />
           </ButtonBox>
