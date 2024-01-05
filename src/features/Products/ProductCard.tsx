@@ -16,6 +16,11 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
             src={info.attributes.mainImage.data.attributes.url}
             alt={info.attributes.name}
           />
+          {info.attributes.topSellers && (
+            <AbsoluteLabel>
+              <Text>Топ продаж</Text>
+            </AbsoluteLabel>
+          )}
         </CardImageBox>
       )}
       <Box>
@@ -25,6 +30,7 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
         ) : (
           <No>Нет в наличии</No>
         )}
+
         <Button>Подробнее</Button>
       </Box>
     </Container>
@@ -41,6 +47,23 @@ const Container = styled(Link, {
   "@xs": {
     width: "calc(100%/3 - 13.35px)",
   },
+});
+
+const Text = styled("p", {
+  margin: 0,
+  padding: "4px 12px",
+  fontWeight: 500,
+  color: "#fff",
+  fontSize: 12,
+  lineHeight: "14px",
+});
+
+const AbsoluteLabel = styled("div", {
+  position: "absolute",
+  top: 8,
+  left: 8,
+  background: "#ffa500",
+  borderRadius: "20px",
 });
 
 const CardImageBox = styled("div", {

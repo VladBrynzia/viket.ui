@@ -8,6 +8,7 @@ import { CommonTextArea } from "../../ui/common/CommonTextArea";
 import { styled } from "../../../stitches.config";
 import { UniqueShopItem, useShopContext } from "../../context/ShopPopupContext";
 import { useNoScroll } from "../../hooks/useNoScroll";
+import { AccessoriesType } from "../../types/product";
 
 type Values = {
   name: string;
@@ -33,9 +34,16 @@ export const OrderPopup: React.FC<Props> = ({ order, totalAmount }) => {
 
   const orderToTextValue = useMemo(() => {
     let value = "";
-
     for (let item of order) {
-      value += `${item.item.name}(Толщина: ${item.item.thickness}мм, Размер листа: ${item.item.sheetOption.listSize}) - ${item.count}шт; `;
+      if (!!item.item.sheetOption.listSize) {
+        value += `${item.item.name}(Толщина: ${item.item.sheetOption.thickness}мм, Размер листа: ${item.item.sheetOption.listSize}) - ${item.count}шт; `;
+      } else if (
+        item.item.sheetOption.accessoriesType === AccessoriesType.Meters
+      ) {
+        value += `${item.item.name}(Длинна: ${item.item.sheetOption.itemLength}мм) - ${item.count}шт; `;
+      } else {
+        value += `${item.item.name} - ${item.count}шт; `;
+      }
     }
 
     value += `Сумма заказа: ${totalAmount} грн;`;

@@ -26,8 +26,8 @@ export const ProductInfo: React.FC<Props> = ({ pageContext, location }) => {
 
       try {
         const { data } = await sendRequestToAPI(
-          `query($language: I18NLocaleCode, $filters: ProductFiltersInput)  {
-            product: products(locale: $language, filters: $filters) {
+          `query($filters: ProductFiltersInput)  {
+            product: products(filters: $filters) {
               data {
                 id
                 attributes {
@@ -35,8 +35,35 @@ export const ProductInfo: React.FC<Props> = ({ pageContext, location }) => {
                   description
                   characteristics
                   haveInStock
-                  thickness
-                  color
+                  slug
+                  products_category {
+                    data {
+                      attributes {
+                        categoryName
+                        categoryId
+                      }
+                    }
+                  }
+                  topSellers
+                  policarbonSheetOptions {
+                    haveInStock
+                    listSize
+                    warrantyText
+                    wholesalePriceInfo
+                    totalPrice
+                    pricePerMeter
+                    thickness
+                    color
+                  }
+                  accessoriesSheetOptions {
+                    haveInStock
+                    warrantyText
+                    accessoriesType
+                    wholesalePriceInfo
+                    totalPrice
+                    color
+                    itemLength
+                  }
                   mainImage {
                     data {
                       attributes {
@@ -44,19 +71,12 @@ export const ProductInfo: React.FC<Props> = ({ pageContext, location }) => {
                       }
                     }
                   }
-                  slug
-                  images {
+                  productImages {
                     data {
                       attributes {
                         url
                       }
                     }
-                  }
-                  sheetOption {
-                    pricePerMeter
-                    totalPrice
-                    listSize
-                    haveInStock
                   }
                 }
               }
@@ -95,7 +115,7 @@ export const ProductInfo: React.FC<Props> = ({ pageContext, location }) => {
               ]}
             />
           </LinkBox>
-          <FullProductInfo product={product} />
+          <FullProductInfo product={product} isPolicarbon={!!product.policarbonSheetOptions.length} />
         </>
       ) : (
         <Loading />

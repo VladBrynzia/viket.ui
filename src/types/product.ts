@@ -1,29 +1,13 @@
 export type Product = {
+  id: string;
   attributes: ProductInfoType;
 };
-
-export type ShopItem = {
-  name: string;
-  thickness: string;
-  sheetOption: SheetOption;
-  slug: string;
-  mainImage: {
-    data: {
-      attributes: {
-        url: string;
-      }
-    }
-  };
-}
 
 export type ProductInfoType = {
   name: string;
   description: string;
-  characteristics: string;
   haveInStock: boolean;
-  color: string;
-  thickness: string;
-  slug: string;
+  topSellers: boolean;
   mainImage: {
     data: {
       attributes: {
@@ -31,22 +15,45 @@ export type ProductInfoType = {
       }
     }
   };
-  images: {
+  slug: string;
+  characteristics: string;
+  productImages: {
     data: {
       attributes: {
         url: string;
       }
-    }
+    }[]
   };
-  sheetOption: SheetOption[]
+  policarbonSheetOptions: PolicarbonSheetOptionsType[];
+  accessoriesSheetOptions: AccessoriesSheetOptionsType[];
 };
 
-export type SheetOption = {
-  pricePerMeter: number;
-  totalPrice: number;
-  listSize: string;
+export type PolicarbonSheetOptionsType = {
   haveInStock: boolean;
-};
+  listSize: string;
+  warrantyText: string;
+  wholesalePriceInfo: string;
+  color: string;
+  totalPrice: number;
+  pricePerMeter: number;
+  thickness: number;
+}
+
+export type AccessoriesSheetOptionsType = {
+  haveInStock: boolean;
+  warrantyText: string;
+  wholesalePriceInfo: string;
+  accessoriesType: AccessoriesType;
+  totalPrice: number;
+  color: string;
+  itemLength: string;
+}
+
+export enum AccessoriesType {
+  Pieces = 'pieces',
+  Meters = 'meters',
+}
+
 
 export type ProductCategory = {
   attributes: {
@@ -56,16 +63,22 @@ export type ProductCategory = {
       data: {
         attributes: {
           name: string;
-          haveInStock: boolean;
-          mainImage: {
-            data: {
-              attributes: {
-                url: string;
-              }
-            }
-          }
+          slug: string;
         }
       }
     }
   }
+}
+
+export type ShopItem = {
+  name: string;
+  sheetOption: any;
+  slug: string;
+  mainImage: {
+    data: {
+      attributes: {
+        url: string;
+      }
+    }
+  };
 }

@@ -27,7 +27,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage, setProductsPerPage] = useState<number>(12);
-  const [thickness, setThickness] = useState<string | undefined>(undefined);
+  const [thickness, setThickness] = useState<number | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +36,8 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     const getData = async () => {
       try {
         const { data } = await sendRequestToAPI(
-          `query($language: I18NLocaleCode, $pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
-            products(locale: $language, pagination: $pagination, sort: "createdAt:ASC", filters: {products_category: {categoryId: {contains: $category}}}) {
+          `query($pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
+            products(pagination: $pagination, sort: "createdAt:ASC", filters: {products_category: {categoryId: {contains: $category}}}) {
               meta {
                 pagination {
                   pageCount 
@@ -46,54 +46,70 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                 }
               } 
               data {
-              attributes {
-                name
-                description
-                characteristics
-                haveInStock
-                thickness
-                color
-                slug
-                mainImage {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                }
-                images {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                }
-                sheetOption {
-                  pricePerMeter
-                  totalPrice
-                  listSize
+								id
+                attributes {
+                  name
+                  description
                   haveInStock
-                }
+                  topSellers
+                  mainImage {
+                    data {
+                      id
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                  slug
+                  products_category {
+                    data {
+                      attributes {
+                        categoryName
+                        categoryId
+                      }
+                    }
+                  }
+                  characteristics
+                  productImages {
+                    data {
+                      id
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                  policarbonSheetOptions {
+                    haveInStock
+                    listSize
+                    warrantyText
+                    wholesalePriceInfo
+                    totalPrice
+                    pricePerMeter
+                    thickness
+                    color
+                  }
+                  accessoriesSheetOptions {
+                    haveInStock
+                    warrantyText
+                    accessoriesType
+                    wholesalePriceInfo
+                    totalPrice
+                    color
+                    itemLength
+                  }
                 }
               }
             }
-            productsCategories(locale: $language, filters: $filter) {
+            productsCategories(filters: $filter) {
               data {
                 attributes {
                   categoryName 
                   categoryId
-                  products {
+                 	products {
                     data {
                       attributes {
                         name
-                        haveInStock
-                        mainImage{
-                          data {
-                            attributes{
-                              url
-                            }
-                          }
-                        }
+                        slug
                       }
                     }
                   }
@@ -102,7 +118,6 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
             }
           }`,
           {
-            language: pageContext.language,
             pagination: { page: currentPage, pageSize: productsPerPage },
             category: filteredCategory,
           }
@@ -140,23 +155,42 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   };
 
   const uniqueThickness = useMemo(() => {
-    let uniqueArr: string[] = [];
-    for (let i = 0; i < products.length; i++) {
-      if (!uniqueArr.includes(products[i].attributes.thickness)) {
-        uniqueArr.push(products[i].attributes.thickness);
-      }
-    }
-    return uniqueArr;
+    const uniqueThicknesses = [
+      ...new Set(
+        products.flatMap((product) =>
+          product.attributes.policarbonSheetOptions.map(
+            (variant) => variant.thickness
+          )
+        )
+      ),
+    ];
+
+    return uniqueThicknesses;
   }, [products]);
 
   const uniqueColor = useMemo(() => {
-    let uniqueArr: string[] = [];
-    for (let i = 0; i < products.length; i++) {
-      if (!uniqueArr.includes(products[i].attributes.color)) {
-        uniqueArr.push(products[i].attributes.color);
-      }
-    }
-    return uniqueArr;
+    const uniqueColors = [
+      ...new Set(
+        products.flatMap((product) =>
+          product.attributes.policarbonSheetOptions.map(
+            (variant) => variant.color
+          )
+        )
+      ),
+      ...new Set(
+        products.flatMap((product) =>
+          product.attributes.accessoriesSheetOptions.map(
+            (variant) => variant.color
+          )
+        )
+      ),
+    ];
+
+    const uniqueColorsWithoutDuplicates = uniqueColors.filter(
+      (value, index, self) => self.indexOf(value) === index
+    );
+
+    return uniqueColorsWithoutDuplicates;
   }, [products]);
 
   const filteredProducts = useMemo(() => {
@@ -165,21 +199,53 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
       return products;
     } else if (thickness && !color) {
       // если есть только thickness, возвращаем массив с товарами, у которых thickness равен стейту thickness
-      return products.filter(
-        (product) => product.attributes.thickness === thickness
+      const filteredThicknessProducts = products.filter((product) =>
+        product.attributes.policarbonSheetOptions.some(
+          (variant) => variant.thickness === thickness
+        )
       );
+      return filteredThicknessProducts;
     } else if (!thickness && color) {
       // если есть только color, возвращаем массив с товарами, у которых color равен стейту color
-      return products.filter((product) => product.attributes.color === color);
+      const filteredColorProducts = [];
+      filteredColorProducts.push(
+        ...products.filter((product) =>
+          product.attributes.policarbonSheetOptions.some(
+            (variant) => variant.color === color
+          )
+        )
+      );
+      filteredColorProducts.push(
+        ...products.filter((product) =>
+          product.attributes.accessoriesSheetOptions.some(
+            (variant) => variant.color === color
+          )
+        )
+      );
+      return filteredColorProducts;
     } else {
       // если есть и thickness и color, возвращаем массив с товарами, у которых и thickness, и color равны соответствующим стейтам
-      return products.filter(
-        (product) =>
-          product.attributes.thickness === thickness &&
-          product.attributes.color === color
+      const filteredColorThicknessProducts = products.filter((product) =>
+        product.attributes.policarbonSheetOptions.some(
+          (variant) =>
+            variant.thickness === thickness && variant.color === color
+        )
       );
+      return filteredColorThicknessProducts;
     }
   }, [products, thickness, color]);
+
+  const filteredSortedProducts = useMemo(() => {
+    return filteredProducts.sort((a, b) => {
+      if (a.attributes.topSellers && !b.attributes.topSellers) {
+        return -1; // продукт a идет перед продуктом b
+      } else if (!a.attributes.topSellers && b.attributes.topSellers) {
+        return 1; // продукт b идет перед продуктом a
+      } else {
+        return 0; // порядок не изменяется
+      }
+    });
+  }, [filteredProducts]);
 
   const title = "Продукция";
   const description =
@@ -241,8 +307,8 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                   <SortTitle>Толщина</SortTitle>
                   <SortParamBox>
                     {uniqueThickness
-                      .sort((a, b) => +a - +b)
-                      .map((el: string, i: number) => (
+                      .sort((a, b) => a - b)
+                      .map((el: number, i: number) => (
                         <SortParam
                           key={i}
                           onClick={() => {
@@ -285,7 +351,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
             </LeftContainer>
             <RightContainer>
               <CardsBox>
-                {filteredProducts.map((el: Product, i: number) => (
+                {filteredSortedProducts.map((el: Product, i: number) => (
                   <ProductCard key={i} info={el} />
                 ))}
               </CardsBox>
@@ -423,9 +489,6 @@ const TypeList = styled("ul", {
   flexWrap: "wrap",
   width: "100%",
   gap: 5,
-  "@md": {
-    flexDirection: "column",
-  },
 });
 
 const ItemLink = styled(Link, {
