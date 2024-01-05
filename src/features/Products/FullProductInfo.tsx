@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { ProductInfoType, SheetOption, ShopItem } from "../../types/product";
+import {
+  AccessoriesSheetOptionsType,
+  AccessoriesType,
+  PolicarbonSheetOptionsType,
+  ProductInfoType,
+  ShopItem,
+} from "../../types/product";
 import { styled } from "../../../stitches.config";
 import warranty from "../../../static/icons/warranty.png";
 import { useShopContext } from "../../context/ShopPopupContext";
 
 type Props = {
   product: ProductInfoType;
+  isPolicarbon: boolean;
 };
 
 type Tabs = "description" | "characteristics";
@@ -15,13 +22,19 @@ export function addTargetBlank(htmlString: string) {
   return htmlString.replace(regex, `<a href="$1" target="_blank"$2>`);
 }
 
-export const FullProductInfo: React.FC<Props> = ({ product }) => {
-  const richText = product.characteristics;
-  const richTextObj = eval("({obj:[" + richText + "]})");
-
-  const [selectedSheetOption, setSelectedSheetOption] = useState<SheetOption>(
-    product.sheetOption[0]
+export const FullProductInfo: React.FC<Props> = ({ product, isPolicarbon }) => {
+  const richTextCharacteristicsObj = eval(
+    "({obj:[" + product.characteristics + "]})"
   );
+  const richTextDescriptionObj = eval("({obj:[" + product.description + "]})");
+
+  const defaultSelectedSheetOption = isPolicarbon
+    ? product.policarbonSheetOptions[0]
+    : product.accessoriesSheetOptions[0];
+
+  const [selectedSheetOption, setSelectedSheetOption] = useState<
+    PolicarbonSheetOptionsType | AccessoriesSheetOptionsType
+  >(defaultSelectedSheetOption);
   const [selectedTab, setSelectedTab] = useState<Tabs>("description");
   const { addProductToShop } = useShopContext();
 
@@ -29,11 +42,12 @@ export const FullProductInfo: React.FC<Props> = ({ product }) => {
     mainImage: product.mainImage,
     name: product.name,
     slug: product.slug,
-    thickness: product.thickness,
     sheetOption: selectedSheetOption,
   };
 
-  const handleChange = (el: SheetOption) => {
+  const handleChange = (
+    el: PolicarbonSheetOptionsType | AccessoriesSheetOptionsType
+  ) => {
     setSelectedSheetOption(el);
   };
 
@@ -178,43 +192,117 @@ export const FullProductInfo: React.FC<Props> = ({ product }) => {
             src={product.mainImage.data.attributes.url}
             alt={product.name}
           />
+          {product.topSellers && (
+            <AbsoluteLabel>
+              <AbsoluteText>Топ продаж</AbsoluteText>
+            </AbsoluteLabel>
+          )}
         </LeftBox>
         <RightBox>
-          <Title>{product.name}</Title>
-          <Text>Выберите размер листа/ профиль длинна профиля / фурнитура в штуках или в метрах</Text>
-          <List>
-            {product.sheetOption.map((el, i) => (
-              <Item key={i}>
-                <ItemBox>
-                  <Input
-                    type="checkbox"
-                    checked={selectedSheetOption === el}
-                    onChange={() => handleChange(el)}
-                  />
-                  {el.listSize}
-                </ItemBox>
-              </Item>
-            ))}
-          </List>
-          <BoldText>{selectedSheetOption.totalPrice} грн / лист</BoldText>
-          {selectedSheetOption.haveInStock ? (
-            <Yes>Есть на наличии</Yes>
+          {isPolicarbon ? (
+            <>
+              <Title>{product.name}</Title>
+              <Text>Выберите размер листа</Text>
+              <List>
+                {product.policarbonSheetOptions.map((el, i) => {
+                  return (
+                    <Item key={i}>
+                      <ItemBox>
+                        <Input
+                          type="checkbox"
+                          checked={selectedSheetOption === el}
+                          onChange={() => handleChange(el)}
+                        />
+                        {el.listSize}
+                      </ItemBox>
+                    </Item>
+                  );
+                })}
+              </List>
+              <BoldText>{selectedSheetOption.totalPrice} грн / лист</BoldText>
+              {selectedSheetOption.haveInStock ? (
+                <Yes>Есть на наличии</Yes>
+              ) : (
+                <No>Нет в наличии</No>
+              )}
+              <Text>
+                Цена за 1 м2 - {selectedSheetOption.pricePerMeter} грн
+              </Text>
+              {selectedSheetOption.wholesalePriceInfo && (
+                <LightText>{selectedSheetOption.wholesalePriceInfo}</LightText>
+              )}
+              {selectedSheetOption.warrantyText && (
+                <Box>
+                  <Warranty src={warranty} alt="warranty" />
+                  <WarrantyText>
+                    {selectedSheetOption.warrantyText}
+                  </WarrantyText>
+                </Box>
+              )}
+              <Button
+                isDisabled={!selectedSheetOption.haveInStock}
+                disabled={!selectedSheetOption.haveInStock}
+                onClick={() => addProductToShop(shopItem)}
+              >
+                Купить
+              </Button>
+            </>
           ) : (
-            <No>Нет в наличии</No>
+            <>
+              <Title>{product.name}</Title>
+              {product.accessoriesSheetOptions[0].accessoriesType ===
+                AccessoriesType.Meters && <Text>Выберите длинну</Text>}
+
+              <List>
+                {product.accessoriesSheetOptions.map((el, i) => {
+                  const itemTypeText =
+                    el.accessoriesType === AccessoriesType.Meters && "мм";
+                  return (
+                    !!itemTypeText && (
+                      <Item key={i}>
+                        <ItemBox>
+                          <Input
+                            type="checkbox"
+                            checked={selectedSheetOption === el}
+                            onChange={() => handleChange(el)}
+                          />
+                          {el.itemLength} {itemTypeText}
+                        </ItemBox>
+                      </Item>
+                    )
+                  );
+                })}
+              </List>
+              <BoldText>
+                {selectedSheetOption.totalPrice} грн
+                {product.accessoriesSheetOptions[0].accessoriesType ===
+                  AccessoriesType.Pieces && "/шт"}
+              </BoldText>
+              {selectedSheetOption.haveInStock ? (
+                <Yes>Есть на наличии</Yes>
+              ) : (
+                <No>Нет в наличии</No>
+              )}
+              {selectedSheetOption.wholesalePriceInfo && (
+                <LightText>{selectedSheetOption.wholesalePriceInfo}</LightText>
+              )}
+              {selectedSheetOption.warrantyText && (
+                <Box>
+                  <Warranty src={warranty} alt="warranty" />
+                  <WarrantyText>
+                    {selectedSheetOption.warrantyText}
+                  </WarrantyText>
+                </Box>
+              )}
+              <Button
+                isDisabled={!selectedSheetOption.haveInStock}
+                disabled={!selectedSheetOption.haveInStock}
+                onClick={() => addProductToShop(shopItem)}
+              >
+                Купить
+              </Button>
+            </>
           )}
-          <Text>Цена за 1 м2 - {selectedSheetOption.pricePerMeter} грн</Text>
-          <LightText>Оптовая цена (-7%) при покупке от 3 листов</LightText>
-          <Box>
-            <Warranty src={warranty} alt="warranty" />
-            <WarrantyText>Гарантия 15 лет</WarrantyText>
-          </Box>
-          <Button
-            isDisabled={!selectedSheetOption.haveInStock}
-            disabled={!selectedSheetOption.haveInStock}
-            onClick={() => addProductToShop(shopItem)}
-          >
-            Купить
-          </Button>
         </RightBox>
       </Content>
       <TabsContainer>
@@ -233,12 +321,18 @@ export const FullProductInfo: React.FC<Props> = ({ product }) => {
           </TabsButton>
         </Tabs>
         {selectedTab === "description" ? (
-          <Description>{product.description}</Description>
-        ) : (
           <>
-            {richTextObj.obj[0].blocks.map((el: any, i: number) => (
+            {richTextDescriptionObj.obj[0].blocks.map((el: any, i: number) => (
               <React.Fragment key={i}>{checkType(el)}</React.Fragment>
             ))}
+          </>
+        ) : (
+          <>
+            {richTextCharacteristicsObj.obj[0].blocks.map(
+              (el: any, i: number) => (
+                <React.Fragment key={i}>{checkType(el)}</React.Fragment>
+              )
+            )}
           </>
         )}
       </TabsContainer>
@@ -253,6 +347,23 @@ export const Container = styled("div", {
   "@md": {
     margin: "0 auto 100px",
   },
+});
+
+const AbsoluteText = styled("p", {
+  margin: 0,
+  padding: "4px 12px",
+  fontWeight: 500,
+  color: "#fff",
+  fontSize: 12,
+  lineHeight: "14px",
+});
+
+const AbsoluteLabel = styled("div", {
+  position: "absolute",
+  top: 8,
+  left: 8,
+  background: "#ffa500",
+  borderRadius: "20px",
 });
 
 export const TabsContainer = styled("div", {});
@@ -448,6 +559,7 @@ export const Image = styled("img", {
 });
 
 export const LeftBox = styled("div", {
+  position: "relative",
   "@sm": {
     width: "50%",
   },
