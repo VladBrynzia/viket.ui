@@ -46,6 +46,20 @@ export const MobileMenu: React.FC<Props> = ({ isOpen, toggle }) => {
           alt="header-shop"
         />
         <SocialMedia />
+        <InfoBox>
+          <ExternalReference
+            href="https://goo.gl/maps/utervsCrHdo6J4L36"
+            target="_blank"
+          >
+            <Address>{t("header.nav.address")}</Address>
+          </ExternalReference>
+          <ExternalReference href="tel:+380674898218">
+            <Phone>{t("header.nav.phone2")}</Phone>
+          </ExternalReference>
+          <ExternalReference href="tel:+380674850947">
+            <Phone>{t("header.nav.phone")}</Phone>
+          </ExternalReference>
+        </InfoBox>
       </Container>
     </AbsoluteContainer>
   );
@@ -55,6 +69,38 @@ const background = keyframes({
   "0%": { background: "rgba(0,0,0,0)" },
   "50%": { background: "rgba(0,0,0,0.15)" },
   "100%": { background: "rgba(0,0,0,0.3)" },
+});
+
+const ExternalReference = styled("a", {
+  color: "#000",
+  textDecoration: "none",
+  "&:hover": {
+    "&>p": {
+      color: "#FD7E08",
+    },
+  },
+});
+
+const InfoBox = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: 7,
+});
+
+const Address = styled("p", {
+  transition: "all 300ms ease",
+  margin: 0,
+  fontWeight: 500,
+  fontSize: 14,
+  lineHeight: "16px",
+});
+
+const Phone = styled("p", {
+  transition: "all 300ms ease",
+  margin: 0,
+  fontWeight: 500,
+  fontSize: 14,
+  lineHeight: "16px",
 });
 
 const AbsoluteContainer = styled("div", {

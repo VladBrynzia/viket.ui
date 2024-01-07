@@ -16,7 +16,7 @@ import { OrderPopup } from "../components/OrderPopup/OrderPopup";
 type PolicyContextType = {
   isShopOpen: boolean;
   toggleShop: () => void;
-  addProductToShop: (product: ShopItem) => void;
+  addProductToShop: (product: ShopItem, count: number) => void;
   removeProductFromShop: (product: ShopItem) => void;
   isMarkerVisible: boolean;
   clearShop: () => void;
@@ -89,9 +89,12 @@ export const ShopPopupProvider: React.FC<{ children: ReactNode }> = ({
     setIsShopOpen(!isShopOpen);
   };
 
-  const addProductToShop = (product: ShopItem) => {
-    const newProducts = [...products, product];
+  const addProductToShop = (product: ShopItem, count: number) => {
+    const newProducts = [...products, ...Array(count).fill(product)]
     setProducts(newProducts);
+    console.log("====================================");
+    console.log(newProducts, yourProducts);
+    console.log("====================================");
     setYourProducts(JSON.stringify(newProducts));
     if (!isShopOpen) {
       toast.success("Товар добавлен в корзину!");

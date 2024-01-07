@@ -9,6 +9,9 @@ type Props = {
 
 export const ShopCard: React.FC<Props> = ({ info }) => {
   const { addProductToShop, removeProductFromShop } = useShopContext();
+  console.log("====================================");
+  console.log(info.item.sheetOption);
+  console.log("====================================");
   return (
     <Container to={`/products/${info.item.slug}`}>
       {info.item.mainImage && (
@@ -21,16 +24,27 @@ export const ShopCard: React.FC<Props> = ({ info }) => {
       )}
       <Box>
         <Title>{info.item.name}</Title>
-        <Text>
-          Размер листа:
-          <br></br>
-          {info.item.sheetOption.listSize} мм
-        </Text>
-        <Price>{info.item.sheetOption.totalPrice * info.count} грн</Price>
+        {info.item.sheetOption.itemLength && (
+          <Text>
+            Длинна:
+            <br></br>
+            {info.item.sheetOption.listSize} мм
+          </Text>
+        )}
+        {info.item.sheetOption.listSize && (
+          <Text>
+            Размер листа:
+            <br></br>
+            {info.item.sheetOption.listSize} мм
+          </Text>
+        )}
+        <Price>
+          {(info.item.sheetOption.totalPrice * info.count).toFixed(1)} грн
+        </Price>
         <ButtonBox onClick={(e) => e.preventDefault()}>
           <Button onClick={() => removeProductFromShop(info.item)}>-</Button>
           {info.count}
-          <Button onClick={() => addProductToShop(info.item)}>+</Button>
+          <Button onClick={() => addProductToShop(info.item, 1)}>+</Button>
         </ButtonBox>
       </Box>
     </Container>
@@ -47,11 +61,11 @@ const ButtonBox = styled("div", {
   fontWeight: 700,
   fontSize: 14,
   lineHeight: "16px",
-  cursor: 'default',
+  cursor: "default",
 });
 
 const Button = styled("button", {
-  cursor: 'pointer',
+  cursor: "pointer",
   background: "#5B7FAF",
   border: "none",
   padding: "8px 12px",

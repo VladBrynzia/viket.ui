@@ -14,6 +14,12 @@ export const SocialMedia = () => {
       <a href="https://t.me/+380674850947" target="_blank">
         <Image src="/icons/telegram.svg" alt="telegram" />
       </a>
+      <a
+        href="https://www.instagram.com/policarbonat_viket/?igsh=dDgxNTc1d3Vta3Fn"
+        target="_blank"
+      >
+        <Image src="/icons/instagram.svg" alt="instagram" />
+      </a>
     </Container>
   );
 };
@@ -23,6 +29,16 @@ const Container = styled("div", {
   gap: 20,
   "@md": {
     gap: 30,
+  },
+  "&>:last-child": {
+    "&>img": {
+      width: 33,
+      height: 33,
+      transform: "translateY(-2px)",
+      "@md": {
+        transform: "translateY(0)",
+      },
+    },
   },
 });
 

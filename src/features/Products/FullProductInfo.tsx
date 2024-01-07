@@ -38,6 +38,8 @@ export const FullProductInfo: React.FC<Props> = ({ product, isPolicarbon }) => {
   const [selectedTab, setSelectedTab] = useState<Tabs>("description");
   const { addProductToShop } = useShopContext();
 
+  const [productCount, setProductCount] = useState(1);
+
   const shopItem: ShopItem = {
     mainImage: product.mainImage,
     name: product.name,
@@ -242,16 +244,50 @@ export const FullProductInfo: React.FC<Props> = ({ product, isPolicarbon }) => {
               <Button
                 isDisabled={!selectedSheetOption.haveInStock}
                 disabled={!selectedSheetOption.haveInStock}
-                onClick={() => addProductToShop(shopItem)}
+                onClick={() => addProductToShop(shopItem, productCount)}
               >
                 Купить
               </Button>
+              <CountText>Количество добавляемых в корзину товаров</CountText>
+              <AddBox>
+                <AddButton
+                  isDisabled={!selectedSheetOption.haveInStock}
+                  disabled={!selectedSheetOption.haveInStock}
+                  onClick={() => {
+                    if (productCount === 1) {
+                      setProductCount(1);
+                    } else {
+                      setProductCount(productCount - 1);
+                    }
+                  }}
+                >
+                  <MinusImage src="/icons/minus.svg" alt="minus" />
+                </AddButton>
+                <ProductCount>{productCount}</ProductCount>
+                <AddButton
+                  isDisabled={!selectedSheetOption.haveInStock}
+                  disabled={!selectedSheetOption.haveInStock}
+                  onClick={() => {
+                    if (productCount === 1000) {
+                      setProductCount(1000);
+                    } else {
+                      setProductCount(productCount + 1);
+                    }
+                  }}
+                >
+                  <PlusImage src="/icons/plus.svg" alt="plus" />
+                </AddButton>
+              </AddBox>
             </>
           ) : (
             <>
               <Title>{product.name}</Title>
               {product.accessoriesSheetOptions[0].accessoriesType ===
-                AccessoriesType.Meters && <Text>Выберите длинну</Text>}
+              AccessoriesType.Meters ? (
+                <Text>Выберите длинну</Text>
+              ) : (
+                <PcText>Цена указана за единицу товара</PcText>
+              )}
 
               <List>
                 {product.accessoriesSheetOptions.map((el, i) => {
@@ -297,10 +333,40 @@ export const FullProductInfo: React.FC<Props> = ({ product, isPolicarbon }) => {
               <Button
                 isDisabled={!selectedSheetOption.haveInStock}
                 disabled={!selectedSheetOption.haveInStock}
-                onClick={() => addProductToShop(shopItem)}
+                onClick={() => addProductToShop(shopItem, productCount)}
               >
                 Купить
               </Button>
+              <CountText>Количество добавляемых в корзину товаров</CountText>
+              <AddBox>
+                <AddButton
+                  isDisabled={!selectedSheetOption.haveInStock}
+                  disabled={!selectedSheetOption.haveInStock}
+                  onClick={() => {
+                    if (productCount === 1) {
+                      setProductCount(1);
+                    } else {
+                      setProductCount(productCount - 1);
+                    }
+                  }}
+                >
+                  <MinusImage src="/icons/minus.svg" alt="minus" />
+                </AddButton>
+                <ProductCount>{productCount}</ProductCount>
+                <AddButton
+                  isDisabled={!selectedSheetOption.haveInStock}
+                  disabled={!selectedSheetOption.haveInStock}
+                  onClick={() => {
+                    if (productCount === 1000) {
+                      setProductCount(1000);
+                    } else {
+                      setProductCount(productCount + 1);
+                    }
+                  }}
+                >
+                  <PlusImage src="/icons/plus.svg" alt="plus" />
+                </AddButton>
+              </AddBox>
             </>
           )}
         </RightBox>
@@ -347,6 +413,16 @@ export const Container = styled("div", {
   "@md": {
     margin: "0 auto 100px",
   },
+});
+
+const PlusImage = styled("img", {
+  width: 32,
+  height: 32,
+});
+
+const MinusImage = styled("img", {
+  width: 16,
+  height: 28,
 });
 
 const AbsoluteText = styled("p", {
@@ -422,7 +498,7 @@ export const Description = styled("p", {
 
 export const List = styled("ul", {
   padding: 0,
-  margin: "0 0 25px",
+  margin: "0 0 20px",
   listStyle: "none",
 });
 
@@ -443,9 +519,6 @@ export const Box = styled("div", {
   alignItems: "center",
   gap: 8,
   margin: "0 0 30px",
-  "@md": {
-    margin: "0 0 50px",
-  },
 });
 
 export const Warranty = styled("img", {
@@ -497,6 +570,14 @@ export const LightText = styled("p", {
   },
 });
 
+export const PcText = styled("p", {
+  fontWeight: 600,
+  fontSize: 16,
+  lineHeight: "19px",
+  color: "#585858",
+  margin: "0 0 10px",
+});
+
 export const Text = styled("p", {
   fontWeight: 600,
   fontSize: 16,
@@ -505,6 +586,64 @@ export const Text = styled("p", {
   margin: "0 0 15px",
   "@md": {
     margin: "0 0 20px",
+  },
+});
+export const CountText = styled("p", {
+  fontWeight: 600,
+  fontSize: 9,
+  lineHeight: "19px",
+  color: "#171717",
+  margin: "10px 0 0",
+  textAlign: "center",
+  "@md": {
+    textAlign: "start",
+  },
+});
+
+export const ProductCount = styled("p", {
+  fontWeight: 600,
+  fontSize: 16,
+  lineHeight: "19px",
+  color: "#171717",
+});
+
+const AddBox = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  margin: "0 auto",
+  width: "220px",
+  "@md": {
+    textAlign: "start",
+    margin: "0",
+  },
+});
+
+const AddButton = styled("button", {
+  cursor: "pointer",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "25px",
+  height: "25px",
+  margin: "0 auto",
+  background: "#FFA500",
+  border: "none",
+  borderRadius: "0px 5px",
+  padding: "8px",
+  color: "$white",
+  "@md": {
+    margin: "0",
+    padding: "20px",
+  },
+
+  variants: {
+    isDisabled: {
+      true: {
+        background: "#cf8602",
+        color: "#d6d3ce",
+      },
+    },
   },
 });
 
