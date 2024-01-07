@@ -70,6 +70,15 @@ export const Contact: React.FC<Props> = ({ pageContext }) => {
               380 (67) 489 82 18
             </Text>
           </Box>
+          <Box>
+            <InstaImage src="/icons/instagram.svg" alt="instagram" />
+            <Text
+              href="https://www.instagram.com/policarbonat_viket/?igsh=dDgxNTc1d3Vta3Fn"
+              target="_blank"
+            >
+              policarbonat_viket
+            </Text>
+          </Box>
         </Content>
         <Content>
           <Subtitle>Mail</Subtitle>
@@ -133,6 +142,11 @@ const Image = styled("img", {
     width: 35,
     height: 35,
   },
+});
+
+const InstaImage = styled("img", {
+  width: 29,
+  height: 29,
 });
 
 const Box = styled("div", {

@@ -10,7 +10,7 @@ export const CallUs = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (width >= 200) {
+    if (width >= 0) {
       setShow(true);
     } else {
       setShow(false);

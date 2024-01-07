@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { styled } from "../../../stitches.config";
 import { Link } from "gatsby-plugin-react-i18next";
 import { Product } from "../../types/product";
@@ -8,6 +8,26 @@ type Props = {
 };
 
 export const ProductCard: React.FC<Props> = ({ info }) => {
+  const productMinPrice = useMemo(() => {
+    let minPrice;
+
+    if (!!info.attributes.accessoriesSheetOptions.length) {
+      minPrice = Math.min(
+        ...info.attributes.accessoriesSheetOptions.map(
+          (item) => item.totalPrice
+        )
+      );
+    } else {
+      minPrice = Math.min(
+        ...info.attributes.policarbonSheetOptions.map(
+          (item) => item.pricePerMeter
+        )
+      );
+    }
+
+    return minPrice;
+  }, []);
+
   return (
     <Container to={info.attributes.slug}>
       {info.attributes.mainImage && (
@@ -25,6 +45,7 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
       )}
       <Box>
         <Title>{info.attributes.name}</Title>
+        <Price>От {productMinPrice} грн</Price>
         {info.attributes.haveInStock ? (
           <Yes>Есть на наличии</Yes>
         ) : (
@@ -97,6 +118,14 @@ const Title = styled("p", {
   WebkitBoxOrient: "vertical",
 });
 
+const Price = styled("p", {
+  fontWeight: 600,
+  color: "#171717",
+  margin: "0",
+  fontSize: 15,
+  lineHeight: "18px",
+});
+
 const Yes = styled("p", {
   fontWeight: 400,
   color: "#14AC36",
@@ -118,7 +147,7 @@ const Box = styled("div", {
   background: "#FAFAFA",
   display: "flex",
   flexDirection: "column",
-  gap: 20,
+  gap: 15,
 });
 
 const Button = styled("button", {

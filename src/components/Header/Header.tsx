@@ -53,6 +53,7 @@ export const Header = () => {
             href="https://goo.gl/maps/utervsCrHdo6J4L36"
             target="_blank"
           >
+            <AddressMobile>{t("header.nav.address.city")}</AddressMobile>
             <Address>{t("header.nav.address")}</Address>
           </ExternalReference>
           <ExternalReference href="tel:+380674898218">
@@ -134,29 +135,46 @@ const ExternalReference = styled("a", {
 });
 
 const InfoBox = styled("div", {
-  display: "none",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  gap: 5,
+});
+
+const AddressMobile = styled("p", {
+  transition: "all 300ms ease",
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 10,
+  lineHeight: "12px",
   "@md": {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
-    gap: 5,
+    display: "none",
   },
 });
 
 const Address = styled("p", {
-  transition: "all 300ms ease",
-  margin: 0,
-  fontWeight: 500,
-  fontSize: 14,
-  lineHeight: "16px",
+  display: "none",
+  "@md": {
+    display: "initial",
+    transition: "all 300ms ease",
+    margin: 0,
+    fontWeight: 500,
+    fontSize: 14,
+    lineHeight: "16px",
+  },
 });
 
 const Phone = styled("p", {
   transition: "all 300ms ease",
   margin: 0,
-  fontWeight: 500,
-  fontSize: 14,
-  lineHeight: "16px",
+  fontWeight: 400,
+  fontSize: 10,
+  lineHeight: "12px",
+  "@md": {
+    fontWeight: 500,
+    fontSize: 14,
+    lineHeight: "16px",
+  },
 });
 
 const Image = styled("img", {

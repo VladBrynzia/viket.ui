@@ -37,6 +37,20 @@ export const Footer: React.FC = () => {
             <Title>Как с нами связаться</Title>
             <LineImage src="/icons/footer-item.svg" alt="line" />
             <SocialMedia />
+            <InfoBox>
+              <ExternalReference
+                href="https://goo.gl/maps/utervsCrHdo6J4L36"
+                target="_blank"
+              >
+                <Address>{t("header.nav.address")}</Address>
+              </ExternalReference>
+              <ExternalReference href="tel:+380674898218">
+                <Phone>{t("header.nav.phone2")}</Phone>
+              </ExternalReference>
+              <ExternalReference href="tel:+380674850947">
+                <Phone>{t("header.nav.phone")}</Phone>
+              </ExternalReference>
+            </InfoBox>
           </Box>
         </FooterBox>
       </FooterContentContainer>
@@ -52,6 +66,42 @@ export const Footer: React.FC = () => {
 };
 
 const Container = styled("footer", {});
+
+const ExternalReference = styled("a", {
+  color: "#000",
+  textDecoration: "none",
+  "&:hover": {
+    "&>p": {
+      color: "#FD7E08",
+    },
+  },
+});
+
+const InfoBox = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: 5,
+  "@md": {
+    gap: 8,
+  },
+});
+
+const Address = styled("p", {
+  transition: "all 300ms ease",
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "16px",
+  marginBottom: "2px",
+});
+
+const Phone = styled("p", {
+  transition: "all 300ms ease",
+  margin: 0,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: "16px",
+});
 
 const Empty = styled("div", {
   display: "none",
@@ -75,10 +125,10 @@ const CopyrightContentContainer = styled("div", {
   flexDirection: "column",
   gap: 30,
   margin: "0 auto",
-  padding: "100px 20px",
+  padding: "40px 20px",
   maxWidth: "1280px",
   "@md": {
-    padding: "100px 20px",
+    padding: "60px 20px",
   },
 });
 
