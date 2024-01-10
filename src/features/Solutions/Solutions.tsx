@@ -422,8 +422,10 @@ const Nav = styled("div", {
 const SwiperContainer = styled("div", {
   position: "relative",
   width: "100%",
-  maxWidth: "1000px",
+  maxWidth: "800px",
+  margin: "0 auto",
   "@md": {
+      maxWidth: "1000px",
     margin: "50px auto 100px",
   },
     "@lg": {
