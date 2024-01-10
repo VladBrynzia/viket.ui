@@ -68,13 +68,16 @@ const ContentContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
   gap: 15,
-  maxWidth: 1280,
+  maxWidth: 1000,
   margin: "0 auto",
   "@md": {
     gap: 60,
     padding: "60px 20px",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  "@lg": {
+    maxWidth: "1280px",
   },
 });
 

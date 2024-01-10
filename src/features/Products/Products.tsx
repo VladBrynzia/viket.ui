@@ -1,5 +1,5 @@
 import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
 import shop from "../../../static/icons/shop.png";
@@ -11,6 +11,8 @@ import { useShopContext } from "../../context/ShopPopupContext";
 import { Link } from "gatsby-plugin-react-i18next";
 import { Loading } from "../../ui/common/Loading";
 import { Helmet } from "react-helmet";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { SmallLoading } from "../../ui/common/SmallLoading";
 
 type Props = {
   pageContext: Partial<PageContext>;
@@ -26,9 +28,11 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   >([]);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [productsPerPage, setProductsPerPage] = useState<number>(12);
+  const [productsPerPage, setProductsPerPage] = useState<number>(9);
   const [thickness, setThickness] = useState<number | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
+
+  const [productInfo, setProductInfo] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +40,211 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     const getData = async () => {
       try {
         const { data } = await sendRequestToAPI(
-          `query($pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
+          `query {
+            info: products(pagination: {limit: 100000}) {
+              data {
+                attributes {
+                  policarbonSheetOptions {
+                    thickness
+                    color
+                  }
+                  accessoriesSheetOptions {
+                    color
+                  }
+                }
+              }
+            }
+          }`,
+          {}
+        );
+        setProductInfo(data.data.info.data);
+      } catch (err) {
+        return err;
+      }
+    };
+    getData();
+  }, []);
+
+  const getData = useCallback(async () => {
+    try {
+      const { data } = await sendRequestToAPI(
+        // $pagination: PaginationArg,
+        // pagination: $pagination,
+        `query($pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
+          products(pagination: $pagination, sort: "createdAt:ASC", filters: {products_category: {categoryId: {contains: $category}}}) {
+            meta {
+              pagination {
+                pageCount 
+                pageSize
+                page
+              }
+            } 
+            data {
+              id
+              attributes {
+                name
+                description
+                haveInStock
+                topSellers
+                mainImage {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                slug
+                products_category {
+                  data {
+                    attributes {
+                      categoryName
+                      categoryId
+                    }
+                  }
+                }
+                characteristics
+                productImages {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                policarbonSheetOptions {
+                  haveInStock
+                  listSize
+                  warrantyText
+                  wholesalePriceInfo
+                  totalPrice
+                  pricePerMeter
+                  thickness
+                  color
+                }
+                accessoriesSheetOptions {
+                  haveInStock
+                  warrantyText
+                  accessoriesType
+                  wholesalePriceInfo
+                  totalPrice
+                  color
+                  itemLength
+                }
+              }
+            }
+          }
+          productsCategories(filters: $filter) {
+            data {
+              attributes {
+                categoryName 
+                categoryId
+                 products {
+                  data {
+                    attributes {
+                      name
+                      slug
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }`,
+        {
+          pagination: { page: currentPage, pageSize: productsPerPage },
+          category: filteredCategory,
+        }
+      );
+      setProducts(data.data.products.data);
+      setProductsCategories(data.data.productsCategories.data);
+      setTotalPage(data.data.products.meta.pagination.pageCount);
+      setProductsPerPage(data.data.products.meta.pagination.pageSize);
+      setIsLoading(true);
+    } catch (err) {
+      return err;
+    }
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    scrollToTop();
+  };
+
+  const nextPage = () => {
+    if (currentPage >= totalPage) {
+      return;
+    } else {
+      setCurrentPage(currentPage + 1);
+      scrollToTop();
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage <= 1) {
+      return;
+    } else {
+      setCurrentPage(currentPage - 1);
+      scrollToTop();
+    }
+  };
+
+  const uniqueThickness = useMemo(() => {
+    const uniqueThicknesses = [
+      ...new Set(
+        productInfo.flatMap((product: any) =>
+          product.attributes.policarbonSheetOptions.map(
+            (variant: any) => variant.thickness
+          )
+        )
+      ),
+    ];
+
+    return uniqueThicknesses;
+  }, [productInfo]);
+
+  const uniqueColor = useMemo(() => {
+    const uniqueColors = [
+      ...new Set(
+        productInfo.flatMap((product: any) =>
+          product.attributes.policarbonSheetOptions.map(
+            (variant: any) => variant.color
+          )
+        )
+      ),
+      ...new Set(
+        productInfo.flatMap((product: any) =>
+          product.attributes.accessoriesSheetOptions.map(
+            (variant: any) => variant.color
+          )
+        )
+      ),
+    ];
+
+    const uniqueColorsWithoutDuplicates = uniqueColors.filter(
+      (value, index, self) => self.indexOf(value) === index
+    );
+
+    return uniqueColorsWithoutDuplicates;
+  }, [productInfo]);
+
+  const fetchMoreData = () => {
+    if (currentPage < totalPage) {
+      setTimeout(async () => {
+        try {
+          const { data } = await sendRequestToAPI(
+            `query($pagination: PaginationArg, $filter: ProductsCategoryFiltersInput, $category: String)  {
             products(pagination: $pagination, sort: "createdAt:ASC", filters: {products_category: {categoryId: {contains: $category}}}) {
               meta {
                 pagination {
@@ -46,7 +254,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                 }
               } 
               data {
-								id
+                id
                 attributes {
                   name
                   description
@@ -105,7 +313,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                 attributes {
                   categoryName 
                   categoryId
-                 	products {
+                   products {
                     data {
                       attributes {
                         name
@@ -117,81 +325,22 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
               }
             }
           }`,
-          {
-            pagination: { page: currentPage, pageSize: productsPerPage },
-            category: filteredCategory,
-          }
-        );
-        setProducts(data.data.products.data);
-        setProductsCategories(data.data.productsCategories.data);
-        setTotalPage(data.data.products.meta.pagination.pageCount);
-        setProductsPerPage(data.data.products.meta.pagination.pageSize);
-        setIsLoading(true);
-      } catch (err) {
-        return err;
-      }
-    };
-    getData();
-  }, [currentPage, filteredCategory]);
-
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const nextPage = () => {
-    if (currentPage >= totalPage) {
-      return;
-    } else {
-      setCurrentPage(currentPage + 1);
+            {
+              pagination: { page: currentPage + 1, pageSize: productsPerPage },
+              category: filteredCategory,
+            }
+          );
+          setProducts((prevProducts) => [
+            ...prevProducts,
+            ...data.data.products.data,
+          ]);
+          setCurrentPage((prevPage) => prevPage + 1);
+        } catch (err) {
+          console.error("Ошибка при загрузке данных:", err);
+        }
+      }, 1000);
     }
   };
-
-  const prevPage = () => {
-    if (currentPage <= 1) {
-      return;
-    } else {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const uniqueThickness = useMemo(() => {
-    const uniqueThicknesses = [
-      ...new Set(
-        products.flatMap((product) =>
-          product.attributes.policarbonSheetOptions.map(
-            (variant) => variant.thickness
-          )
-        )
-      ),
-    ];
-
-    return uniqueThicknesses;
-  }, [products]);
-
-  const uniqueColor = useMemo(() => {
-    const uniqueColors = [
-      ...new Set(
-        products.flatMap((product) =>
-          product.attributes.policarbonSheetOptions.map(
-            (variant) => variant.color
-          )
-        )
-      ),
-      ...new Set(
-        products.flatMap((product) =>
-          product.attributes.accessoriesSheetOptions.map(
-            (variant) => variant.color
-          )
-        )
-      ),
-    ];
-
-    const uniqueColorsWithoutDuplicates = uniqueColors.filter(
-      (value, index, self) => self.indexOf(value) === index
-    );
-
-    return uniqueColorsWithoutDuplicates;
-  }, [products]);
 
   const filteredProducts = useMemo(() => {
     if (!thickness && !color) {
@@ -350,12 +499,19 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
               </SortBox>
             </LeftContainer>
             <RightContainer>
-              <CardsBox>
-                {filteredSortedProducts.map((el: Product, i: number) => (
-                  <ProductCard key={i} info={el} />
-                ))}
-              </CardsBox>
-              {!!filteredProducts?.length && totalPage > 1 && (
+              <InfiniteScroll
+                dataLength={filteredProducts.length}
+                next={fetchMoreData}
+                hasMore={currentPage < totalPage}
+                loader={<SmallLoading />}
+              >
+                <CardsBox>
+                  {filteredSortedProducts.map((el: Product, i: number) => (
+                    <ProductCard key={i} info={el} />
+                  ))}
+                </CardsBox>
+              </InfiniteScroll>
+              {/* {!!filteredProducts?.length && totalPage > 1 && (
                 <Pagination
                   length={totalPage}
                   paginate={paginate}
@@ -363,7 +519,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
                   nextPage={nextPage}
                   currentPage={currentPage}
                 />
-              )}
+              )} */}
             </RightContainer>
           </Container>
         </>
