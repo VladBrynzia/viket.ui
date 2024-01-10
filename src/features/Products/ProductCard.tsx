@@ -2,31 +2,20 @@ import React, { useMemo } from "react";
 import { styled } from "../../../stitches.config";
 import { Link } from "gatsby-plugin-react-i18next";
 import { Product } from "../../types/product";
+import { log } from "console";
 
 type Props = {
   info: Product;
 };
 
 export const ProductCard: React.FC<Props> = ({ info }) => {
-  const productMinPrice = useMemo(() => {
-    let minPrice;
-
+  const isPolicarbon = useMemo(() => {
     if (!!info.attributes.accessoriesSheetOptions.length) {
-      minPrice = Math.min(
-        ...info.attributes.accessoriesSheetOptions.map(
-          (item) => item.totalPrice
-        )
-      );
+      return info.attributes.accessoriesSheetOptions[0].totalPrice;
     } else {
-      minPrice = Math.min(
-        ...info.attributes.policarbonSheetOptions.map(
-          (item) => item.pricePerMeter
-        )
-      );
+      return info.attributes.policarbonSheetOptions[0].pricePerMeter;
     }
-
-    return minPrice;
-  }, []);
+  }, [info]);
 
   return (
     <Container to={info.attributes.slug}>
@@ -45,7 +34,7 @@ export const ProductCard: React.FC<Props> = ({ info }) => {
       )}
       <Box>
         <Title>{info.attributes.name}</Title>
-        <Price>От {productMinPrice} грн</Price>
+        <Price>От {isPolicarbon} грн</Price>
         {info.attributes.haveInStock ? (
           <Yes>Есть на наличии</Yes>
         ) : (

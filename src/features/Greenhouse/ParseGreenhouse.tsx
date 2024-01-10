@@ -369,10 +369,13 @@ const Nav = styled("div", {
 const SwiperContainer = styled("div", {
   position: "relative",
   width: "100%",
-  maxWidth: "1000px",
+  maxWidth: "900px",
   margin: "0 auto 10px",
   "@md": {
     margin: "10px auto 20px",
+  },
+  "@lg": {
+    maxWidth: "1000px",
   },
 
   ".swiper-button-disabled": {

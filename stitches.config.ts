@@ -27,7 +27,7 @@ export const { styled, css, getCssText } = createStitches({
     xs: '(min-width: 768px)',
     sm: '(min-width: 960px)',
     md: '(min-width: 1280px)',
-    lg: '(min-width: 1400px)',
+    lg: '(min-width: 1420px)',
     xl: '(min-width: 1920px)',
   },
 });
