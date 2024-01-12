@@ -342,11 +342,53 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     }
   };
 
+  // const filteredProducts = useMemo(() => {
+  //   if (!thickness && !color) {
+  //     // если оба стейта undefined, возвращаем исходный массив
+  //     return products;
+  //   } else if (thickness && !color) {
+  //     // если есть только thickness, возвращаем массив с товарами, у которых thickness равен стейту thickness
+  //     const filteredThicknessProducts = products.filter((product) =>
+  //       product.attributes.policarbonSheetOptions.some(
+  //         (variant) => variant.thickness === thickness
+  //       )
+  //     );
+  //     return filteredThicknessProducts;
+  //   } else if (!thickness && color) {
+  //     // если есть только color, возвращаем массив с товарами, у которых color равен стейту color
+  //     const filteredColorProducts = [];
+  //     filteredColorProducts.push(
+  //       ...products.filter((product) =>
+  //         product.attributes.policarbonSheetOptions.some(
+  //           (variant) => variant.color === color
+  //         )
+  //       )
+  //     );
+  //     filteredColorProducts.push(
+  //       ...products.filter((product) =>
+  //         product.attributes.accessoriesSheetOptions.some(
+  //           (variant) => variant.color === color
+  //         )
+  //       )
+  //     );
+  //     return filteredColorProducts;
+  //   } else {
+  //     // если есть и thickness и color, возвращаем массив с товарами, у которых и thickness, и color равны соответствующим стейтам
+  //     const filteredColorThicknessProducts = products.filter((product) =>
+  //       product.attributes.policarbonSheetOptions.some(
+  //         (variant) =>
+  //           variant.thickness === thickness && variant.color === color
+  //       )
+  //     );
+  //     return filteredColorThicknessProducts;
+  //   }
+  // }, [products, thickness, color]);
+
   const filteredProducts = useMemo(() => {
-    if (!thickness && !color) {
-      // если оба стейта undefined, возвращаем исходный массив
+    if (!thickness && !color && !filteredCategory) {
+      // если все стейты undefined, возвращаем исходный массив
       return products;
-    } else if (thickness && !color) {
+    } else if (thickness && !color && !filteredCategory) {
       // если есть только thickness, возвращаем массив с товарами, у которых thickness равен стейту thickness
       const filteredThicknessProducts = products.filter((product) =>
         product.attributes.policarbonSheetOptions.some(
@@ -354,7 +396,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
         )
       );
       return filteredThicknessProducts;
-    } else if (!thickness && color) {
+    } else if (!thickness && color && !filteredCategory) {
       // если есть только color, возвращаем массив с товарами, у которых color равен стейту color
       const filteredColorProducts = [];
       filteredColorProducts.push(
@@ -372,17 +414,27 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
         )
       );
       return filteredColorProducts;
+    } else if (!thickness && !color && filteredCategory) {
+      // если есть только категория, возвращаем массив с товарами, у которых категория равна стейту filteredCategory
+      return products.filter(
+        (product) =>
+          product.attributes.products_category.data.attributes
+            .categoryId === filteredCategory
+      );
     } else {
-      // если есть и thickness и color, возвращаем массив с товарами, у которых и thickness, и color равны соответствующим стейтам
+      // если есть и thickness и color, возвращаем массив с товарами, у которых и thickness, и color, и категория равны соответствующим стейтам
       const filteredColorThicknessProducts = products.filter((product) =>
         product.attributes.policarbonSheetOptions.some(
           (variant) =>
-            variant.thickness === thickness && variant.color === color
+            variant.thickness === thickness &&
+            variant.color === color &&
+            product.attributes.products_category.data.attributes
+              .categoryId === filteredCategory
         )
       );
       return filteredColorThicknessProducts;
     }
-  }, [products, thickness, color]);
+  }, [products, thickness, color, filteredCategory]);
 
   const filteredSortedProducts = useMemo(() => {
     return filteredProducts.sort((a, b) => {
