@@ -24,6 +24,14 @@ export type ProductInfoType = {
       }
     }[]
   };
+  products_category: {
+    data: {
+      attributes: {
+        categoryName: string;
+        categoryId: string;
+      }
+    }
+  };
   policarbonSheetOptions: PolicarbonSheetOptionsType[];
   accessoriesSheetOptions: AccessoriesSheetOptionsType[];
 };
