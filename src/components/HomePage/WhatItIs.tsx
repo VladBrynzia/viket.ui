@@ -3,19 +3,23 @@ import { styled } from "../../../stitches.config";
 import sotaCard from "../../../static/images/sot-card.png";
 import monoCard from "../../../static/images/mono-card.png";
 import profCard from "../../../static/images/prof-card.png";
+import { Link } from "gatsby-plugin-react-i18next";
 
 const cards = [
   {
+    link: 'policarbon-sota',
     image: sotaCard,
     title: "Поликарбонат сотовый",
     info: "Сотовый поликарбонат – светопрозрачный полимерный материал, который представляет собой двух-, трех- или четырехслойную конструкцию, заполненную большим количеством продольных перемычек (ребер жесткости), уникальные характеристики которого позволяют применять его во многих строительных направлениях (частное, коммунальное, промышленное, с/х строительство).",
   },
   {
+    link: 'policarbon-mono',
     image: monoCard,
     title: "Поликарбонат монолитный",
     info: "Монолитный поликарбонат - cветопрозрачный листовой полимерный материал без внутренних пустот (литой). Благодаря исключительной стойкости, ударопрочности и легкому весу (в 250 раз прочнее стекла такой же толщины и в 2 раза легче) имеет более широкий спектр применения, чем сотовый поликарбонат (промышленность, медицина, строительство и прочие сферы деятельности)",
   },
   {
+    link: 'policarbon-profiled',
     image: profCard,
     title: "Поликарбонат профилированный",
     info: "Профилированный поликарбонат - вид монолитного поликарбоната в виде трапеции или волны. Отлично подходит для накрытия крыш и скатных навесов, практичный в эксплуатации – ударопрочный и легкий, простой в монтаже (не требующий элементов соединения).",
@@ -26,7 +30,7 @@ export const WhatItIs = () => {
   return (
     <Container>
       {cards.map((el, i) => (
-        <Box key={i}>
+        <Box key={i} to={`/products?${el.link}`}>
           <Image src={el.image} alt="card-image" />
           <Title>{el.title}</Title>
           <Text>{el.info}</Text>
@@ -64,7 +68,8 @@ const Title = styled("h2", {
   },
 });
 
-const Box = styled("div", {
+const Box = styled(Link, {
+  cursor: 'pointer',
   display: "flex",
   flexDirection: "column",
   gap: 15,

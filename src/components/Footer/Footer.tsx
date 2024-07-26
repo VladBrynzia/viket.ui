@@ -2,13 +2,94 @@ import React from "react";
 import { styled } from "../../../stitches.config";
 import { Link, useTranslation } from "gatsby-plugin-react-i18next";
 import { SocialMedia } from "../../ui/common/SocialMedia/SocialMedia";
+import { Formik, Field, Form } from "formik";
+import { sendRequestToAPI } from "../../api/api";
+import toast from "react-hot-toast";
+
+const initialValues = {
+  name: "",
+  phone: "",
+  message: "Клиент заполнил форму обратной связи и ожидает звонка!",
+};
+
+type Values = {
+  name: string;
+  phone: string;
+};
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
 
+  const submitForm = async (data: Values, resetForm: () => void) => {
+    const { name, phone } = data;
+    const mutationVariables = {
+      name,
+      phone: String(phone),
+      message: "Клиент заполнил форму обратной связи и ожидает звонка!" ,
+    };
+
+    try {
+      await sendRequestToAPI(
+        `mutation ($data: ContactUsInput!) {
+            createContactUs(data: $data) {
+              data {
+                id
+              }
+            }
+          }`,
+        {
+          data: mutationVariables,
+        }
+      );
+    } catch (err) {
+      return err;
+    }
+    toast.success(
+      "Запрос отправлен. Наш менеджер с Вами свяжется в ближайшее время!"
+    );
+    resetForm();
+  };
+
+  const validatePhone = (value: string) => {
+    let error;
+    if (!/^([+]?[0-9]{3,20})$/i.test(value)) {
+      error = 'Телефон введен неверно!';
+    }
+    return error;
+  };
+
   return (
     <Container>
       <FooterContentContainer>
+        <ContentContainer>
+          <Title>Форма обратной связи</Title>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, { resetForm }) => {
+              submitForm(values, resetForm);
+            }}
+          >
+            {({ submitForm, values, errors, setFieldValue }) => {
+              return (
+                <StyledForm>
+                  <Box>
+                    <StyledField placeholder="Имя" name="name" required />
+                    <RelativeDiv>
+                      <StyledField
+                        placeholder="Номер телефона"
+                        name="phone"
+                        type="number"
+                        validate={values.phone && validatePhone}
+                      />
+                      {!!errors.phone && <Warning>{errors.phone}</Warning>}
+                    </RelativeDiv>
+                  </Box>
+                  <Button onClick={() => submitForm}>Отправить запрос</Button>
+                </StyledForm>
+              );
+            }}
+          </Formik>
+        </ContentContainer>
         <FooterBox>
           <Box>
             <Link to="/">
@@ -64,6 +145,77 @@ export const Footer: React.FC = () => {
     </Container>
   );
 };
+
+const Warning = styled("p", {
+  position: "absolute",
+  top: 60,
+  left: 30,
+  textAlign: "center",
+  fontSize: "10px",
+  margin: "0",
+  color: "#ff2400",
+});
+
+const ContentContainer = styled("div", {
+  paddingTop: 40,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: 20,
+  margin: "0 auto",
+  "@md": {
+    width: "1280px",
+    gap: 30,
+  },
+});
+
+const StyledField = styled(Field, {
+  background: "$white",
+  border: "1px solid #F6D9FF",
+  borderRadius: "10px",
+  padding: "20px 30px",
+  minWidth: "280px",
+  fontSize: 13,
+  "@md": {
+    width: "525px",
+  },
+});
+
+const Button = styled("button", {
+  textDecoration: "none",
+  cursor: "pointer",
+  display: "flex",
+  gap: 8,
+  background: "#FFA500",
+  border: "none",
+  borderRadius: "0px 5px",
+  padding: "8px 18px",
+  fontWeight: 700,
+  fontSize: 10,
+  lineHeight: "12px",
+  color: "$white",
+  margin: "auto 20px 0",
+  "@md": {
+    padding: "10px 60px",
+    fontSize: 18,
+    lineHeight: "21px",
+    margin: "auto 0 0",
+  },
+});
+
+const StyledForm = styled(Form, {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  gap: 20,
+});
+
+const RelativeDiv = styled("div", {
+  position: "relative",
+});
+
 
 const Container = styled("footer", {});
 
@@ -159,12 +311,12 @@ const Box = styled("div", {
 const Title = styled("h2", {
   textTransform: "uppercase",
   fontWeight: 700,
-  fontSize: 14,
+  fontSize: 16,
   lineHeight: "16px",
   margin: "12px 0 0",
   "@md": {
-    fontSize: 16,
-    lineHeight: "19px",
+    fontSize: 18,
+    lineHeight: "21px",
   },
 });
 
