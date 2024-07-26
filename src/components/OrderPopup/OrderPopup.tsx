@@ -315,7 +315,7 @@ const StyledField = styled(Field, {
   border: "1px solid #F6D9FF",
   borderRadius: "10px",
   padding: "20px 30px",
-  width: "300px",
+  minWidth: "280px",
   fontSize: 13,
   "@md": {
     width: "525px",

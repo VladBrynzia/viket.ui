@@ -18,21 +18,22 @@ type Props = {
 
 export const Products: React.FC<Props> = ({ pageContext }) => {
   const [filteredCategory, setFilteredCategory] = useState<string | undefined>(
-    undefined
+    window.location.search.slice(1)
   );
+
   const [products, setProducts] = useState<Product[]>([]);
   const [productsCategories, setProductsCategories] = useState<
-    ProductCategory[]
+  ProductCategory[]
   >([]);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [productsPerPage, setProductsPerPage] = useState<number>(15);
+  const [productsPerPage, setProductsPerPage] = useState<number>(999999999);
   const [thickness, setThickness] = useState<number | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [productInfo, setProductInfo] = useState([]);
+  const [productInfo, setProductInfo] = useState<Product[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -119,14 +120,64 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
               }
             }
             info: products(pagination: {limit: 100000}) {
+              meta {
+                pagination {
+                  pageCount 
+                  pageSize
+                  page
+                }
+              } 
               data {
+								id
                 attributes {
+                  name
+                  description
+                  haveInStock
+                  topSellers
+                  mainImage {
+                    data {
+                      id
+                      attributes {
+                        url
+                      }
+                    }
+                  }
+                  slug
+                  products_category {
+                    data {
+                      attributes {
+                        categoryName
+                        categoryId
+                      }
+                    }
+                  }
+                  characteristics
+                  productImages {
+                    data {
+                      id
+                      attributes {
+                        url
+                      }
+                    }
+                  }
                   policarbonSheetOptions {
+                    haveInStock
+                    listSize
+                    warrantyText
+                    wholesalePriceInfo
+                    totalPrice
+                    pricePerMeter
                     thickness
                     color
                   }
                   accessoriesSheetOptions {
+                    haveInStock
+                    warrantyText
+                    accessoriesType
+                    wholesalePriceInfo
+                    totalPrice
                     color
+                    itemLength
                   }
                 }
               }
@@ -183,7 +234,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const uniqueThickness = useMemo(() => {
     const uniqueThicknesses = [
       ...new Set(
-        products.flatMap((product) =>
+        productInfo.flatMap((product) =>
           product.attributes.policarbonSheetOptions.map(
             (variant) => variant.thickness
           )
@@ -197,14 +248,14 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
   const uniqueColor = useMemo(() => {
     const uniqueColors = [
       ...new Set(
-        products.flatMap((product) =>
+        productInfo.flatMap((product) =>
           product.attributes.policarbonSheetOptions.map(
             (variant) => variant.color
           )
         )
       ),
       ...new Set(
-        products.flatMap((product) =>
+        productInfo.flatMap((product) =>
           product.attributes.accessoriesSheetOptions.map(
             (variant) => variant.color
           )
@@ -377,9 +428,14 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
             </LeftContainer>
             <RightContainer>
               <CardsBox>
-                {filteredSortedProducts.map((el: Product, i: number) => (
+                {filteredSortedProducts.length ? <>{filteredSortedProducts.map((el: Product, i: number) => (
                   <ProductCard key={i} info={el} />
-                ))}
+                ))}</>
+                  :
+                  <Flex>
+                    <EmptyText>Нет продукции по заданым критериям.</EmptyText>
+                  </Flex>
+                }
               </CardsBox>
               {!!filteredProducts?.length && totalPage > 1 && (
                 <Pagination
@@ -405,6 +461,23 @@ export const Text = styled("label", {
   fontSize: 14,
   lineHeight: "16px",
   color: "#171717",
+});
+
+export const Flex = styled("div", {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '20px',
+  width: '100%',
+});
+
+export const EmptyText = styled("p", {
+  margin: 0,
+  fontWeight: 500,
+  fontSize: 20,
+  lineHeight: "24px",
+  color: "#171717",
+  textAlign: 'center',
 });
 
 export const Input = styled("input", {
