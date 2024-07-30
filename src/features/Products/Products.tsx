@@ -2,12 +2,10 @@ import { PageContext } from "gatsby-plugin-react-i18next/dist/types";
 import React, { useEffect, useMemo, useState } from "react";
 import { Breadcrumb } from "../../ui/common/Breadcrumb";
 import { styled } from "../../../stitches.config";
-import shop from "../../../static/icons/shop.png";
 import { ProductCard } from "./ProductCard";
 import { Product, ProductCategory } from "../../types/product";
 import { sendRequestToAPI } from "../../api/api";
 import { Pagination } from "./Pagination";
-import { useShopContext } from "../../context/ShopPopupContext";
 import { Link } from "gatsby-plugin-react-i18next";
 import { Loading } from "../../ui/common/Loading";
 import { Helmet } from "react-helmet";
@@ -21,10 +19,23 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
     window.location.search.slice(1)
   );
 
+  const validCategories = new Set(["policarbon-sota", "policarbon-mono", "policarbon-profiled"]);
+
+  const newFilteredCategory = useMemo(() => {
+    return validCategories.has(filteredCategory || '') ? filteredCategory : undefined;
+  }, [filteredCategory]);
+
+  useEffect(() => {
+    if (filteredCategory && !validCategories.has(filteredCategory)) {
+      setFilteredCategory(undefined);
+    }
+  }, [filteredCategory]);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [productsCategories, setProductsCategories] = useState<
-  ProductCategory[]
+    ProductCategory[]
   >([]);
+
   const [totalPage, setTotalPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsPerPage, setProductsPerPage] = useState<number>(999999999);
@@ -185,7 +196,7 @@ export const Products: React.FC<Props> = ({ pageContext }) => {
           }`,
           {
             pagination: { page: currentPage, pageSize: productsPerPage },
-            category: filteredCategory,
+            category: newFilteredCategory,
           }
         );
         setProducts(data.data.products.data);
